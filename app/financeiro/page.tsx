@@ -34,6 +34,8 @@ export default function FinanceiroPage() {
   const [modal,      setModal]      = useState(false)
   const [form,       setForm]       = useState(EMPTY_FORM)
   const [confirmDel, setConfirmDel] = useState<string | null>(null)
+  const [editando,   setEditando]   = useState<Transacao | null>(null)
+  const [editForm,   setEditForm]   = useState({ statusPagamento: 'pago' as 'pago' | 'parcial' | 'pendente', valorPago: '' })
 
   const reload = () => setTransacoes(getTransacoes())
   useEffect(() => { reload() }, [])
@@ -85,6 +87,27 @@ export default function FinanceiroPage() {
   function marcarPago(t: Transacao) {
     updateTransacao(t.id, { statusPagamento: 'pago', valorPago: t.valor })
     reload()
+  }
+
+  function abrirEdicao(t: Transacao) {
+    setEditando(t)
+    setEditForm({
+      statusPagamento: t.statusPagamento ?? 'pago',
+      valorPago: String(t.valorPago ?? t.valor),
+    })
+  }
+
+  function salvarEdicao() {
+    if (!editando) return
+    const novoStatus = editForm.statusPagamento
+    const novoValorPago = novoStatus === 'pago'
+      ? editando.valor
+      : novoStatus === 'parcial'
+        ? parseFloat(editForm.valorPago) || 0
+        : 0
+    updateTransacao(editando.id, { statusPagamento: novoStatus, valorPago: novoValorPago })
+    reload()
+    setEditando(null)
   }
 
   return (
@@ -195,8 +218,9 @@ export default function FinanceiroPage() {
                 {filtradas.map(t => {
                   const status = t.statusPagamento ?? (t.tipo === 'entrada' ? 'pago' : undefined)
                   return (
-                    <tr key={t.id} className="group transition-all"
+                    <tr key={t.id} className="group transition-all cursor-pointer"
                       style={{ background: 'var(--surface)', borderTop: '1px solid var(--border)' }}
+                      onClick={() => t.tipo === 'entrada' && abrirEdicao(t)}
                       onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface2)')}
                       onMouseLeave={e => (e.currentTarget.style.background = 'var(--surface)')}>
                       <td className="px-5 py-4">
@@ -222,7 +246,7 @@ export default function FinanceiroPage() {
                       <td className="px-5 py-4">
                         {t.tipo === 'entrada' && status && <BadgeStatus status={status} />}
                       </td>
-                      <td className="px-5 py-4">
+                      <td className="px-5 py-4" onClick={e => e.stopPropagation()}>
                         <div className="flex items-center gap-1.5">
                           {t.tipo === 'entrada' && (status === 'parcial' || status === 'pendente') && (
                             <button onClick={() => marcarPago(t)} title="Marcar como pago total"
@@ -249,7 +273,8 @@ export default function FinanceiroPage() {
               {filtradas.map(t => {
                 const status = t.statusPagamento ?? (t.tipo === 'entrada' ? 'pago' : undefined)
                 return (
-                  <div key={t.id} className="flex items-center gap-3 px-4 py-3.5" style={{ background: 'var(--surface)' }}>
+                  <div key={t.id} className="flex items-center gap-3 px-4 py-3.5 cursor-pointer" style={{ background: 'var(--surface)' }}
+                    onClick={() => t.tipo === 'entrada' && abrirEdicao(t)}>
                     <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
                       style={{ background: t.tipo === 'entrada' ? '#22C55E14' : '#EF444414' }}>
                       {t.tipo === 'entrada' ? <TrendingUp size={14} color="var(--success)" /> : <TrendingDown size={14} color="var(--danger)" />}
@@ -273,13 +298,13 @@ export default function FinanceiroPage() {
                         )}
                       </div>
                       {t.tipo === 'entrada' && (status === 'parcial' || status === 'pendente') && (
-                        <button onClick={() => marcarPago(t)}
+                        <button onClick={e => { e.stopPropagation(); marcarPago(t) }}
                           className="w-7 h-7 flex items-center justify-center rounded-lg"
                           style={{ background: '#22C55E18', color: 'var(--success)' }}>
                           <CheckCircle size={12} />
                         </button>
                       )}
-                      <button onClick={() => setConfirmDel(t.id)}
+                      <button onClick={e => { e.stopPropagation(); setConfirmDel(t.id) }}
                         className="w-7 h-7 flex items-center justify-center rounded-lg"
                         style={{ background: '#EF444418', color: 'var(--danger)' }}>
                         <Trash2 size={12} />
@@ -412,6 +437,130 @@ export default function FinanceiroPage() {
                 </button>
                 <button onClick={salvar}
                   disabled={!form.descricao.trim() || !form.valor}
+                  className="flex-1 py-2.5 rounded-xl text-sm font-semibold hover:brightness-110 active:scale-95 transition-all"
+                  style={{ background: 'var(--accent)', color: '#000' }}>
+                  Salvar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Popup de edição de pagamento */}
+      {editando && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 anim-in"
+          style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)' }}
+          onClick={e => { if (e.target === e.currentTarget) setEditando(null) }}>
+          <div className="w-full max-w-sm rounded-2xl p-6 anim-scale"
+            style={{ background: 'var(--surface)', border: '1px solid var(--border2)' }}>
+
+            {/* Header */}
+            <div className="flex items-start justify-between gap-4 mb-5"
+              style={{ borderBottom: '1px solid var(--border)', paddingBottom: '1.25rem' }}>
+              <div className="min-w-0">
+                <p className="text-[10px] font-semibold tracking-[0.15em] uppercase mb-1" style={{ color: 'var(--text3)' }}>
+                  Editar pagamento
+                </p>
+                <h2 className="font-semibold text-base leading-snug truncate">{editando.descricao}</h2>
+                <p className="text-xs mt-0.5 font-mono" style={{ color: 'var(--text2)' }}>
+                  Total: {formatMoeda(editando.valor)}
+                </p>
+              </div>
+              <button onClick={() => setEditando(null)}
+                className="w-8 h-8 flex items-center justify-center rounded-xl shrink-0"
+                style={{ background: 'var(--surface2)', color: 'var(--text2)' }}>
+                <X size={15} />
+              </button>
+            </div>
+
+            <div className="space-y-5">
+              {/* Status */}
+              <div>
+                <label className="block text-[10px] font-semibold tracking-[0.12em] uppercase mb-2"
+                  style={{ color: 'var(--text2)' }}>
+                  Status de pagamento
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {([
+                    ['pago',    'Pago total', CheckCircle, '#22C55E'],
+                    ['parcial', 'Parcial',    AlertCircle, '#F5C518'],
+                    ['pendente','Pendente',   Clock,       '#FB923C'],
+                  ] as const).map(([val, lbl, Icon, cor]) => (
+                    <button key={val}
+                      onClick={() => setEditForm(f => ({ ...f, statusPagamento: val }))}
+                      className="py-3 px-2 rounded-xl text-[11px] font-semibold flex flex-col items-center gap-1.5 transition-all"
+                      style={{
+                        background: editForm.statusPagamento === val ? cor + '20' : 'var(--surface2)',
+                        color:      editForm.statusPagamento === val ? cor : 'var(--text3)',
+                        border:     `1px solid ${editForm.statusPagamento === val ? cor + '44' : 'var(--border)'}`,
+                      }}>
+                      <Icon size={14} />
+                      {lbl}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Valor pago (parcial) */}
+              {editForm.statusPagamento === 'parcial' && (
+                <div>
+                  <label className="block text-[10px] font-semibold tracking-[0.12em] uppercase mb-1.5"
+                    style={{ color: 'var(--text2)' }}>
+                    Valor já pago
+                  </label>
+                  <input
+                    type="number"
+                    value={editForm.valorPago}
+                    onChange={e => setEditForm(f => ({ ...f, valorPago: e.target.value }))}
+                    placeholder="0,00"
+                    className="w-full px-3.5 py-2.5 rounded-xl text-sm"
+                    style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+                  />
+                  {editForm.valorPago && parseFloat(editForm.valorPago) < editando.valor && (
+                    <p className="text-[10px] mt-1.5 font-medium" style={{ color: 'var(--warning)' }}>
+                      A receber: {formatMoeda(editando.valor - parseFloat(editForm.valorPago))}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* Resumo */}
+              <div className="rounded-xl px-4 py-3" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
+                <div className="flex justify-between text-xs mb-1">
+                  <span style={{ color: 'var(--text3)' }}>Total do lançamento</span>
+                  <span className="font-mono font-semibold" style={{ color: 'var(--text)' }}>{formatMoeda(editando.valor)}</span>
+                </div>
+                <div className="flex justify-between text-xs mb-1">
+                  <span style={{ color: 'var(--text3)' }}>Valor pago</span>
+                  <span className="font-mono font-semibold" style={{ color: 'var(--success)' }}>
+                    {editForm.statusPagamento === 'pago'
+                      ? formatMoeda(editando.valor)
+                      : editForm.statusPagamento === 'parcial'
+                        ? formatMoeda(parseFloat(editForm.valorPago) || 0)
+                        : formatMoeda(0)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span style={{ color: 'var(--text3)' }}>A receber</span>
+                  <span className="font-mono font-semibold" style={{ color: 'var(--warning)' }}>
+                    {editForm.statusPagamento === 'pago'
+                      ? formatMoeda(0)
+                      : editForm.statusPagamento === 'parcial'
+                        ? formatMoeda(Math.max(0, editando.valor - (parseFloat(editForm.valorPago) || 0)))
+                        : formatMoeda(editando.valor)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Botões */}
+              <div className="flex gap-3">
+                <button onClick={() => setEditando(null)}
+                  className="flex-1 py-2.5 rounded-xl text-sm font-medium"
+                  style={{ background: 'var(--surface2)', color: 'var(--text2)', border: '1px solid var(--border)' }}>
+                  Cancelar
+                </button>
+                <button onClick={salvarEdicao}
                   className="flex-1 py-2.5 rounded-xl text-sm font-semibold hover:brightness-110 active:scale-95 transition-all"
                   style={{ background: 'var(--accent)', color: '#000' }}>
                   Salvar
