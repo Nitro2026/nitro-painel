@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Users, FolderKanban, Wallet, Menu, X, Zap } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { LayoutDashboard, Users, FolderKanban, Wallet, Menu, X, Zap, LogOut } from 'lucide-react'
 
 const links = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -14,7 +14,13 @@ const links = [
 
 export default function Sidebar() {
   const pathname = usePathname()
+  const router = useRouter()
   const [open, setOpen] = useState(false)
+
+  function sair() {
+    localStorage.removeItem('nitro_auth')
+    router.push('/login')
+  }
 
   useEffect(() => { setOpen(false) }, [pathname])
   useEffect(() => {
@@ -91,10 +97,17 @@ export default function Sidebar() {
               style={{ background: 'var(--surface3)', border: '1px solid var(--border2)' }}>
               <Zap size={13} style={{ color: 'var(--accent)' }} />
             </div>
-            <div className="min-w-0">
+            <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold truncate" style={{ color: 'var(--text)' }}>Nitro Agência</p>
               <p className="text-[10px] truncate" style={{ color: 'var(--text3)' }}>Painel de Gestão</p>
             </div>
+            <button
+              onClick={sair}
+              title="Sair"
+              className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors hover:brightness-125 shrink-0"
+              style={{ background: 'var(--surface3)', color: 'var(--text3)' }}>
+              <LogOut size={13} />
+            </button>
           </div>
         </div>
       </aside>

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import Sidebar from '@/components/Sidebar'
+import PainelWrapper from '@/components/PainelWrapper'
 
 export const metadata: Metadata = {
   title: 'Nitro Agência Digital — Painel',
@@ -11,12 +11,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <body>
-        <div className="flex lg:h-screen">
-          <Sidebar />
-          <main className="flex-1 overflow-y-auto lg:h-screen">
-            {children}
-          </main>
-        </div>
+        <PainelWrapper>
+          {children}
+        </PainelWrapper>
       </body>
     </html>
   )
