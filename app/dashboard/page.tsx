@@ -30,11 +30,19 @@ export default function DashboardPage() {
 
   useEffect(() => { reload() }, [])
 
+  function valorEfetivo(t: Transacao): number {
+    if (t.tipo === 'saida') return t.valor
+    const s = t.statusPagamento
+    if (!s || s === 'pago') return t.valorPago ?? t.valor
+    if (s === 'parcial') return t.valorPago ?? 0
+    return 0
+  }
+
   const mes      = new Date().toISOString().slice(0, 7)
   const txMes    = transacoes.filter(t => t.data.startsWith(mes))
-  const entradas = txMes.filter(t => t.tipo === 'entrada').reduce((s, t) => s + t.valor, 0)
+  const entradas = txMes.filter(t => t.tipo === 'entrada').reduce((s, t) => s + valorEfetivo(t), 0)
   const saidas   = txMes.filter(t => t.tipo === 'saida').reduce((s, t) => s + t.valor, 0)
-  const saldo    = transacoes.reduce((s, t) => t.tipo === 'entrada' ? s + t.valor : s - t.valor, 0)
+  const saldo    = transacoes.reduce((s, t) => t.tipo === 'entrada' ? s + valorEfetivo(t) : s - t.valor, 0)
 
   const projetosAtivos   = projetos.filter(p => p.status === 'em_andamento').length
   const projetosRecentes = [...projetos].sort((a, b) => b.criadoEm.localeCompare(a.criadoEm)).slice(0, 4)
