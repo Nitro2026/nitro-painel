@@ -26,6 +26,8 @@ export interface Transacao {
   descricao: string
   categoria: string
   valor: number
+  valorPago?: number
+  statusPagamento?: 'pago' | 'parcial' | 'pendente'
   data: string
   clienteId?: string
   projetoId?: string
