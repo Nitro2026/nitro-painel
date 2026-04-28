@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Plus, TrendingUp, TrendingDown, Wallet, Trash2, X, Search, CheckCircle, Clock, AlertCircle } from 'lucide-react'
 import { getTransacoes, saveTransacao, deleteTransacao, updateTransacao, formatMoeda, formatData } from '@/lib/store'
 import { Transacao } from '@/lib/types'
+import PageHeader from '@/components/PageHeader'
 
 const CAT_ENTRADA = ['Pagamento de Projeto', 'Mensalidade', 'Consultoria', 'Freelance', 'Bônus', 'Outros']
 const CAT_SAIDA   = ['Ferramentas', 'Assinaturas', 'Marketing', 'Equipe', 'Operacional', 'Impostos', 'Outros']
@@ -53,6 +54,19 @@ export default function FinanceiroPage() {
   const chartPago     = todasEntradas.reduce((s, t) => s + getValorEfetivo(t), 0)
   const chartParcial  = todasEntradas.filter(t => t.statusPagamento === 'parcial').reduce((s, t) => s + (t.valor - (t.valorPago ?? 0)), 0)
   const chartPendente = todasEntradas.filter(t => t.statusPagamento === 'pendente').reduce((s, t) => s + t.valor, 0)
+
+  // Últimos 6 meses para gráfico de barras
+  const ultimos6Meses = Array.from({ length: 6 }, (_, i) => {
+    const d = new Date()
+    d.setDate(1)
+    d.setMonth(d.getMonth() - (5 - i))
+    const key   = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+    const label = d.toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '')
+    const txs   = transacoes.filter(t => t.data.startsWith(key))
+    const ent   = txs.filter(t => t.tipo === 'entrada').reduce((s, t) => s + getValorEfetivo(t), 0)
+    const sai   = txs.filter(t => t.tipo === 'saida').reduce((s, t) => s + t.valor, 0)
+    return { key, label, ent, sai }
+  })
 
   const filtradas = transacoes
     .filter(t => filtro === 'todos' || t.tipo === filtro)
@@ -112,41 +126,53 @@ export default function FinanceiroPage() {
 
   return (
     <div className="min-h-full" style={{ background: 'var(--bg)' }}>
-      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-8 lg:py-10">
+      <div className="max-w-5xl mx-auto px-5 lg:px-8 py-7 lg:py-9">
 
-        {/* Cabeçalho */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 anim-up">
-          <div>
-            <p className="text-[10px] font-semibold tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--text3)' }}>Gestão</p>
-            <h1 className="font-display text-[28px] lg:text-[36px] leading-none tracking-[0.04em]">FINANCEIRO</h1>
-            <p className="text-sm mt-2" style={{ color: 'var(--text2)' }}>Fluxo de caixa da agência</p>
-          </div>
-          <button onClick={() => setModal(true)}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:brightness-110 active:scale-95 self-start sm:self-auto shrink-0"
-            style={{ background: 'var(--accent)', color: '#000' }}>
-            <Plus size={16} strokeWidth={2.5} /> Nova Transação
-          </button>
-        </div>
+        <PageHeader
+          icon={<Wallet size={16} style={{ color: 'var(--accent)' }} />}
+          title="Financeiro"
+          subtitle="Fluxo de caixa da agência"
+          action={
+            <button onClick={() => setModal(true)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all hover:brightness-110 active:scale-95"
+              style={{ background: 'var(--accent)', color: '#000' }}>
+              <Plus size={15} strokeWidth={2.5} /> Nova Transação
+            </button>
+          }
+        />
 
         {/* KPIs */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6 anim-up d-1">
           <KpiMini label="Entradas recebidas" value={formatMoeda(entradasMes)} icon={<TrendingUp size={14} />} color="var(--success)" />
           <KpiMini label="Saídas do mês"      value={formatMoeda(saidasMes)}   icon={<TrendingDown size={14} />} color="var(--danger)" />
           <KpiMini label="A receber"           value={formatMoeda(aReceber)}    icon={<Clock size={14} />}        color="var(--warning)" />
-          <div className="rounded-2xl p-4 lg:p-5 flex flex-col justify-between"
-            style={{ background: saldo >= 0 ? '#22C55E0D' : '#EF44440D', border: `1px solid ${saldo >= 0 ? '#22C55E22' : '#EF444422'}` }}>
-            <span className="w-8 h-8 rounded-xl flex items-center justify-center mb-3"
-              style={{ background: saldo >= 0 ? '#22C55E18' : '#EF444418', color: saldo >= 0 ? 'var(--success)' : 'var(--danger)' }}>
-              <Wallet size={14} />
-            </span>
-            <p className="font-mono text-lg lg:text-2xl font-semibold leading-none"
-              style={{ color: saldo >= 0 ? 'var(--success)' : 'var(--danger)' }}>
-              {formatMoeda(saldo)}
+          <KpiMini
+            label="Margem do mês"
+            value={entradasMes > 0 ? `${Math.round(((entradasMes - saidasMes) / entradasMes) * 100)}%` : '—'}
+            icon={<Wallet size={14} />}
+            color={entradasMes > saidasMes ? 'var(--success)' : 'var(--danger)'}
+          />
+        </div>
+
+        {/* Gráfico de barras — últimos 6 meses */}
+        <div className="rounded-2xl p-5 mb-6 anim-up d-2"
+          style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+          <div className="flex items-center justify-between mb-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em]" style={{ color: 'var(--text2)' }}>
+              Entradas vs Saídas — últimos 6 meses
             </p>
-            <p className="text-[10px] font-semibold tracking-[0.1em] uppercase mt-1.5" style={{ color: 'var(--text3)' }}>
-              Saldo (somente pago)
-            </p>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-sm" style={{ background: '#22C55E' }} />
+                <span className="text-[11px]" style={{ color: 'var(--text3)' }}>Entradas</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-sm" style={{ background: '#EF4444' }} />
+                <span className="text-[11px]" style={{ color: 'var(--text3)' }}>Saídas</span>
+              </div>
+            </div>
           </div>
+          <BarChart data={ultimos6Meses} />
         </div>
 
         {/* Gráfico de recebimentos */}
@@ -178,11 +204,14 @@ export default function FinanceiroPage() {
           <select value={mes} onChange={e => setMes(e.target.value)}
             className="px-4 py-3 rounded-xl text-sm"
             style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)' }}>
-            {meses.map(m => (
-              <option key={m} value={m}>
-                {new Date(m + '-01').toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
-              </option>
-            ))}
+            {meses.map(m => {
+              const [y, mo] = m.split('-').map(Number)
+              return (
+                <option key={m} value={m}>
+                  {new Date(y, mo - 1, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
+                </option>
+              )
+            })}
           </select>
           <div className="flex gap-1.5">
             {(['todos', 'entrada', 'saida'] as const).map(t => {
@@ -610,6 +639,60 @@ function KpiMini({ label, value, icon, color }: { label: string; value: string; 
       </span>
       <p className="font-mono text-lg lg:text-2xl font-semibold leading-none" style={{ color }}>{value}</p>
       <p className="text-[10px] font-semibold tracking-[0.1em] uppercase mt-1.5" style={{ color: 'var(--text3)' }}>{label}</p>
+    </div>
+  )
+}
+
+function BarChart({ data }: { data: { key: string; label: string; ent: number; sai: number }[] }) {
+  const max = Math.max(...data.flatMap(d => [d.ent, d.sai]), 1)
+  const h   = 120
+  const barW = 18
+  const gap  = 6
+  const groupW = barW * 2 + gap
+  const colW   = groupW + 24
+  const width  = colW * data.length
+
+  return (
+    <div className="w-full overflow-x-auto">
+      <svg width="100%" viewBox={`0 0 ${width} ${h + 32}`} preserveAspectRatio="xMidYMid meet" style={{ minWidth: 280 }}>
+        {/* Grid lines */}
+        {[0, 0.25, 0.5, 0.75, 1].map(f => (
+          <line key={f}
+            x1={0} y1={h * (1 - f)}
+            x2={width} y2={h * (1 - f)}
+            stroke="#232330" strokeWidth={1}
+          />
+        ))}
+
+        {data.map((d, i) => {
+          const x    = i * colW + 12
+          const entH = max > 0 ? (d.ent / max) * h : 0
+          const saiH = max > 0 ? (d.sai / max) * h : 0
+
+          return (
+            <g key={d.key}>
+              {/* Barra Entrada */}
+              <rect
+                x={x} y={h - entH} width={barW} height={entH}
+                rx={3} fill="#22C55E" opacity={0.85}
+              />
+              {/* Barra Saída */}
+              <rect
+                x={x + barW + gap} y={h - saiH} width={barW} height={saiH}
+                rx={3} fill="#EF4444" opacity={0.85}
+              />
+              {/* Label mês */}
+              <text
+                x={x + barW + gap / 2} y={h + 18}
+                textAnchor="middle" fill="#50505E"
+                fontSize={9} fontFamily="inherit" textTransform="capitalize"
+              >
+                {d.label}
+              </text>
+            </g>
+          )
+        })}
+      </svg>
     </div>
   )
 }

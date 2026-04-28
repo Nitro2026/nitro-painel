@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, Pencil, Trash2, X, FolderOpen, Search, CalendarDays } from 'lucide-react'
+import { Plus, Pencil, Trash2, X, FolderOpen, Search, CalendarDays, FolderKanban } from 'lucide-react'
 import { getProjetos, saveProjeto, updateProjeto, deleteProjeto, getClientes, formatMoeda, formatData } from '@/lib/store'
 import { Projeto, Cliente } from '@/lib/types'
+import PageHeader from '@/components/PageHeader'
 
 const STATUS_OPT = [
   { value: 'nao_iniciado', label: 'Não iniciado', color: '#44444E' },
@@ -56,25 +57,20 @@ export default function ProjetosPage() {
 
   return (
     <div className="min-h-full" style={{ background: 'var(--bg)' }}>
-      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-8 lg:py-10">
+      <div className="max-w-5xl mx-auto px-5 lg:px-8 py-7 lg:py-9">
 
-        {/* Cabeçalho */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 anim-up">
-          <div>
-            <p className="text-[10px] font-semibold tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--text3)' }}>
-              Gestão
-            </p>
-            <h1 className="font-display text-[28px] lg:text-[36px] leading-none tracking-[0.04em]">PROJETOS</h1>
-            <p className="text-sm mt-2" style={{ color: 'var(--text2)' }}>
-              {projetos.length} projeto{projetos.length !== 1 ? 's' : ''} no total
-            </p>
-          </div>
-          <button onClick={abrirNovo}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:brightness-110 active:scale-95 self-start sm:self-auto shrink-0"
-            style={{ background: 'var(--accent)', color: '#000' }}>
-            <Plus size={16} strokeWidth={2.5} /> Novo Projeto
-          </button>
-        </div>
+        <PageHeader
+          icon={<FolderKanban size={16} style={{ color: 'var(--accent)' }} />}
+          title="Projetos"
+          subtitle={`${projetos.length} projeto${projetos.length !== 1 ? 's' : ''} no total`}
+          action={
+            <button onClick={abrirNovo}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all hover:brightness-110 active:scale-95"
+              style={{ background: 'var(--accent)', color: '#000' }}>
+              <Plus size={15} strokeWidth={2.5} /> Novo Projeto
+            </button>
+          }
+        />
 
         {/* Filtros */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6 anim-up d-1">
