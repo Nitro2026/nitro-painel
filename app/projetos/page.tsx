@@ -64,7 +64,7 @@ export default function ProjetosPage() {
             <p className="text-[10px] font-semibold tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--text3)' }}>
               Gestão
             </p>
-            <h1 className="font-display text-[42px] lg:text-[52px] leading-none tracking-[0.04em]">PROJETOS</h1>
+            <h1 className="font-display text-[28px] lg:text-[36px] leading-none tracking-[0.04em]">PROJETOS</h1>
             <p className="text-sm mt-2" style={{ color: 'var(--text2)' }}>
               {projetos.length} projeto{projetos.length !== 1 ? 's' : ''} no total
             </p>

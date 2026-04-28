@@ -118,7 +118,7 @@ export default function FinanceiroPage() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 anim-up">
           <div>
             <p className="text-[10px] font-semibold tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--text3)' }}>Gestão</p>
-            <h1 className="font-display text-[42px] lg:text-[52px] leading-none tracking-[0.04em]">FINANCEIRO</h1>
+            <h1 className="font-display text-[28px] lg:text-[36px] leading-none tracking-[0.04em]">FINANCEIRO</h1>
             <p className="text-sm mt-2" style={{ color: 'var(--text2)' }}>Fluxo de caixa da agência</p>
           </div>
           <button onClick={() => setModal(true)}

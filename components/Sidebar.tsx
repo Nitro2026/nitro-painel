@@ -59,12 +59,7 @@ export default function Sidebar() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-6 px-4 overflow-y-auto">
-          <p className="px-3 mb-3 text-[10px] font-semibold tracking-[0.15em] uppercase"
-            style={{ color: 'var(--text3)' }}>
-            Navegação
-          </p>
-
+        <nav className="flex-1 py-5 px-4 overflow-y-auto">
           <ul className="space-y-0.5">
             {links.map(({ href, label, icon: Icon }) => {
               const active = pathname === href
@@ -123,7 +118,7 @@ function Logo() {
         <Zap size={15} fill="#000" color="#000" strokeWidth={2.5} />
       </div>
       <div>
-        <span className="font-display text-[18px] tracking-[0.08em] leading-none block"
+        <span className="font-display text-[22px] tracking-[0.08em] leading-none block"
           style={{ color: 'var(--text)' }}>
           NITRO
         </span>

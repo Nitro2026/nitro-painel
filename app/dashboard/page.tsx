@@ -74,25 +74,25 @@ export default function DashboardPage() {
           <p className="text-xs font-semibold tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--accent)' }}>
             {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
           </p>
-          <h1 className="font-display text-[42px] lg:text-[56px] leading-none tracking-[0.04em]" style={{ color: 'var(--text)' }}>
+          <h1 className="font-display text-[28px] lg:text-[36px] leading-none tracking-[0.04em]" style={{ color: 'var(--text)' }}>
             VISÃO GERAL
           </h1>
         </div>
 
         {/* KPIs */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
           <KpiCard label="Clientes" value={String(clientes.length)}
             sub={`${clientes.filter(c => c.status === 'ativo').length} ativos`}
             icon={<Users size={15} />} href="/clientes" delay="d-1" />
           <KpiCard label="Em andamento" value={String(projetosAtivos)}
             sub={`${projetos.length} no total`}
-            icon={<FolderKanban size={15} />} href="/projetos" delay="d-2" highlight />
+            icon={<FolderKanban size={15} />} href="/projetos" delay="d-2" accentBorder />
           <KpiCard label={`Entradas · ${mesLabel}`} value={formatMoeda(entradas)}
             sub={`−${formatMoeda(saidas)} saídas`}
-            icon={<TrendingUp size={15} />} href="/financeiro" delay="d-3" mono />
+            icon={<TrendingUp size={15} />} href="/financeiro" delay="d-3" />
           <KpiCard label="Saldo acumulado" value={formatMoeda(saldo)}
             sub={saldo >= 0 ? 'Positivo' : 'Negativo'}
-            icon={<Wallet size={15} />} href="/financeiro" delay="d-4" mono
+            icon={<Wallet size={15} />} href="/financeiro" delay="d-4"
             valueColor={saldo >= 0 ? 'var(--success)' : 'var(--danger)'} />
         </div>
 
@@ -308,35 +308,35 @@ export default function DashboardPage() {
 
 /* ── Sub-componentes ── */
 
-function KpiCard({ label, value, sub, icon, href, delay, highlight, mono, valueColor }: {
+function KpiCard({ label, value, sub, icon, href, delay, accentBorder, valueColor }: {
   label: string; value: string; sub: string; icon: React.ReactNode
-  href: string; delay: string; highlight?: boolean; mono?: boolean; valueColor?: string
+  href: string; delay: string; accentBorder?: boolean; valueColor?: string
 }) {
   return (
     <Link href={href}
-      className={`anim-up ${delay} rounded-2xl p-5 flex flex-col gap-3 group transition-all duration-200 hover:scale-[1.015]`}
+      className={`anim-up ${delay} rounded-2xl p-5 flex flex-col gap-3 group transition-all duration-200 hover:brightness-110`}
       style={{
-        background: highlight ? 'var(--accent)' : 'var(--surface)',
-        border:     `1px solid ${highlight ? 'transparent' : 'var(--border)'}`,
+        background: 'var(--surface)',
+        border:     `1px solid ${accentBorder ? 'var(--accent)' : 'var(--border)'}`,
       }}>
       <div className="flex items-center justify-between">
         <span className="w-8 h-8 rounded-xl flex items-center justify-center"
-          style={{ background: highlight ? 'rgba(0,0,0,0.12)' : 'var(--surface2)', color: highlight ? '#000' : 'var(--text2)' }}>
+          style={{ background: accentBorder ? 'var(--accent-low)' : 'var(--surface2)', color: accentBorder ? 'var(--accent)' : 'var(--text2)' }}>
           {icon}
         </span>
-        <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-60 transition-opacity"
-          style={{ color: highlight ? '#000' : 'var(--text3)' }} />
+        <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-40 transition-opacity"
+          style={{ color: 'var(--text3)' }} />
       </div>
       <div>
-        <p className={`leading-none ${mono ? 'font-mono text-xl lg:text-2xl font-semibold' : 'font-display text-[32px] lg:text-[38px] tracking-[0.03em]'}`}
-          style={{ color: valueColor ?? (highlight ? '#000' : 'var(--text)') }}>
+        <p className="text-2xl lg:text-3xl font-semibold leading-none tabular-nums"
+          style={{ color: valueColor ?? 'var(--text)' }}>
           {value}
         </p>
-        <p className="text-[10px] font-semibold uppercase tracking-[0.12em] mt-1.5"
-          style={{ color: highlight ? 'rgba(0,0,0,0.5)' : 'var(--text3)' }}>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.12em] mt-2"
+          style={{ color: 'var(--text3)' }}>
           {label}
         </p>
-        <p className="text-xs mt-0.5" style={{ color: highlight ? 'rgba(0,0,0,0.4)' : 'var(--text3)' }}>
+        <p className="text-xs mt-0.5" style={{ color: 'var(--text3)' }}>
           {sub}
         </p>
       </div>
