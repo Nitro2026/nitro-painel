@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Acesso</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <script src="assets/js/data.js"></script>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: var(--bg);
+      padding: 20px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(74,144,217,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,144,217,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(74,144,217,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .login-box {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 24px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 80px rgba(74,144,217,0.1), var(--shadow-lg);
+      animation: fadeUp 0.45s var(--t-slow) both;
+    }
+
+    .login-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--metal-border);
+      background-size: 200% auto;
+      animation: shimmer 3s linear infinite;
+    }
+
+    .login-box::after {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(74,144,217,0.09) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .login-logo {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .login-logo-name {
+      font-family: var(--font-disp);
+      font-size: 22px;
+      letter-spacing: 3px;
+      background: var(--metal);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .login-logo-sub {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .login-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border2), transparent);
+      margin: 0 -36px 28px;
+    }
+
+    .login-heading { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .login-sub { font-size: 12px; color: var(--text3); margin-bottom: 24px; }
+
+    .login-error {
+      background: var(--danger-low);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: var(--r-md);
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #f87171;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .login-error.show { display: block; }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+
+    .form-input-wrap {
+      position: relative;
+    }
+
+    .form-input-wrap .form-input {
+      padding-left: 38px;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 15px;
+      pointer-events: none;
+    }
+
+    .remember-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .remember-row input[type="checkbox"] {
+      accent-color: var(--accent);
+      width: 14px; height: 14px;
+      cursor: pointer;
+    }
+    .remember-row label {
+      font-size: 12px;
+      color: var(--text3);
+      cursor: pointer;
+    }
+
+    .login-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 12px;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      margin-top: 22px;
+      border-radius: var(--r-md);
+    }
+
+    .login-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .sep-metal { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 22px 0; }
+
+    .demo-hint {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 10px 14px;
+      font-size: 11px;
+      color: var(--text3);
+      text-align: center;
+      line-height: 1.5;
+    }
+    .demo-hint strong { color: var(--accent2); }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 480px) {
+      .login-box { padding: 28px 20px; border-radius: 18px; }
+      .login-divider { margin: 0 -20px 24px; }
+    }
+  </style>
+</head>
+<body data-page="login">
+
+  <div class="login-box">
+
+    <div class="login-logo">
+      <span class="login-logo-name" data-bind="empresa">NITRO AGÊNCIA DIGITAL</span>
+      <div class="login-logo-sub">Sistema de Gestão</div>
+    </div>
+
+    <div class="login-divider"></div>
+
+    <div class="login-heading">Bem-vindo de volta</div>
+    <div class="login-sub">Acesse sua conta para continuar</div>
+
+    <div class="login-error" id="login-error">E-mail ou senha incorretos.</div>
+
+    <div class="form-group">
+      <label class="form-label">E-mail</label>
+      <div class="form-input-wrap">
+        <span class="input-icon">✉</span>
+        <input class="form-input" type="email" id="login-email"
+          placeholder="seu@email.com.br" autocomplete="email" autofocus>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Senha</label>
+      <div class="form-input-wrap">
+        <span class="input-icon">🔒</span>
+        <input class="form-input" type="password" id="login-senha"
+          placeholder="••••••••" autocomplete="current-password">
+      </div>
+    </div>
+
+    <div class="remember-row">
+      <input type="checkbox" id="remember-me">
+      <label for="remember-me">Lembrar meu acesso neste dispositivo</label>
+    </div>
+
+    <button class="btn btn-primary login-btn" onclick="doLogin()" id="login-btn">
+      Entrar no Sistema
+    </button>
+
+    <div class="sep-metal"></div>
+
+    <div class="demo-hint">
+      <strong>Modo demonstração:</strong> informe qualquer e-mail válido
+      e uma senha com 6+ caracteres para entrar.
+    </div>
+
+    <div class="login-footer">Acesso restrito · Ambiente protegido</div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script>
+    // Aplicar nome da empresa salvo
+    if (typeof applySettings === 'function') applySettings();
+
+    // Redirecionar se já estiver logado
+    (async function checkSession() {
+      if (window._supabase) {
+        const { data: { session } } = await window._supabase.auth.getSession();
+        if (session) { window.location.replace('index.html'); return; }
+      } else {
+        const s = sessionStorage.getItem('nexus_session') || localStorage.getItem('nexus_session');
+        if (s) { window.location.replace('index.html'); return; }
+      }
+    })();
+
+    async function doLogin() {
+      const email  = document.getElementById('login-email').value.trim();
+      const senha  = document.getElementById('login-senha').value;
+      const lembrar = document.getElementById('remember-me').checked;
+      const errorEl = document.getElementById('login-error');
+      const btn    = document.getElementById('login-btn');
+
+      errorEl.classList.remove('show');
+
+      if (!email || !email.includes('@')) {
+        errorEl.textContent = 'Informe um e-mail válido.';
+        errorEl.classList.add('show');
+        return;
+      }
+      if (senha.length < 6) {
+        errorEl.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+        errorEl.classList.add('show');
+        return;
+      }
+
+      btn.textContent = 'Entrando...';
+      btn.disabled = true;
+
+      // Supabase auth
+      if (window._supabase) {
+        const { data, error } = await window._supabase.auth.signInWithPassword({ email, password: senha });
+        if (error) {
+          errorEl.textContent = 'E-mail ou senha incorretos.';
+          errorEl.classList.add('show');
+          btn.textContent = 'Entrar no Sistema';
+          btn.disabled = false;
+          return;
+        }
+        window.location.replace('index.html');
+        return;
+      }
+
+      // Modo demo — aceita qualquer credencial válida
+      await new Promise(r => setTimeout(r, 700));
+      const session = { email, nome: email.split('@')[0], cargo: 'Administrador' };
+      (lembrar ? localStorage : sessionStorage).setItem('nexus_session', JSON.stringify(session));
+      window.location.replace('index.html');
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+  </script>
+
+</body>
+</html>

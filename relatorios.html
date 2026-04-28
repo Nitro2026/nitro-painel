@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Relatórios</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <script src="assets/js/data.js"></script>
+</head>
+<body data-page="relatorios">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      
+      <div class="logo-text">
+        <span class="logo-name" data-bind="empresa">NITRO AGENCIA DIGITAL</span>
+        <span class="logo-sub">Gestão Empresarial</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-section-label">Principal</span>
+      <a href="index.html" class="nav-item" data-page="dashboard"><div class="nav-icon">⬡</div>Dashboard</a>
+      <a href="projetos.html" class="nav-item" data-page="projetos"><div class="nav-icon">◈</div>Projetos<span class="nav-badge">12</span></a>
+      <a href="clientes.html" class="nav-item" data-page="clientes"><div class="nav-icon">◉</div>Clientes</a>
+      <a href="financeiro.html" class="nav-item" data-page="financeiro"><div class="nav-icon">◎</div>Financeiro</a>
+      <a href="colaboradores.html" class="nav-item" data-page="colaboradores"><div class="nav-icon">◍</div>Colaboradores</a>
+      <span class="nav-section-label">Operações</span>
+      <a href="tarefas.html" class="nav-item" data-page="tarefas"><div class="nav-icon">✦</div>Tarefas<span class="nav-badge">7</span></a>
+      <a href="relatorios.html" class="nav-item" data-page="relatorios"><div class="nav-icon">▣</div>Relatórios</a>
+      <span class="nav-section-label">Sistema</span>
+      <a href="configuracoes.html" class="nav-item" data-page="configuracoes"><div class="nav-icon">⚙</div>Configurações</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">A<span class="user-online"></span></div>
+        <div class="user-info">
+          <div class="user-name">Admin Nexus</div>
+          <div class="user-role">Administrador</div>
+        </div>
+        <span class="user-plan">PRO</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px;justify-content:center;border-color:rgba(239,68,68,0.25);color:var(--danger)" onclick="logout()">↩ Sair</button>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+  <div class="main-wrapper">
+    <header class="topbar">
+      <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu"><span></span><span></span><span></span></button>
+      <div class="topbar-title">
+        <div class="topbar-page">Relatórios</div>
+        <div class="topbar-breadcrumb">Análise de desempenho · Abril 2026</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost btn-sm">↓ Exportar PDF</button>
+        <button class="btn btn-primary btn-sm">Gerar Relatório</button>
+      </div>
+    </header>
+
+    <main class="content page-enter">
+
+      <!-- Cards de relatórios disponíveis -->
+      <div class="section-header">
+        <span class="section-title">Relatórios Disponíveis</span>
+      </div>
+
+      <div class="g3">
+        <div class="project-card shine-corner" style="animation-delay:0.05s;cursor:pointer">
+          <div style="font-size:28px;margin-bottom:12px;opacity:0.8">📊</div>
+          <div class="project-name">Desempenho de Projetos</div>
+          <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">Análise completa de entrega, progresso e cumprimento de prazos por projeto.</p>
+          <div style="display:flex;gap:6px">
+            <span class="badge badge-metal">Mensal</span>
+            <span class="badge badge-metal">Trimestral</span>
+          </div>
+          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%">Gerar →</button>
+        </div>
+
+        <div class="project-card shine-corner" style="animation-delay:0.10s;cursor:pointer">
+          <div style="font-size:28px;margin-bottom:12px;opacity:0.8">💰</div>
+          <div class="project-name">DRE Simplificado</div>
+          <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">Demonstrativo de resultado com entradas, saídas, margem e comparativos de períodos.</p>
+          <div style="display:flex;gap:6px">
+            <span class="badge badge-metal">Mensal</span>
+            <span class="badge badge-metal">Anual</span>
+          </div>
+          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%">Gerar →</button>
+        </div>
+
+        <div class="project-card shine-corner" style="animation-delay:0.15s;cursor:pointer">
+          <div style="font-size:28px;margin-bottom:12px;opacity:0.8">👥</div>
+          <div class="project-name">Carga de Colaboradores</div>
+          <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">Visão de alocação, projetos ativos e produtividade por membro da equipe.</p>
+          <div style="display:flex;gap:6px">
+            <span class="badge badge-metal">Semanal</span>
+            <span class="badge badge-metal">Mensal</span>
+          </div>
+          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%">Gerar →</button>
+        </div>
+
+        <div class="project-card shine-corner" style="animation-delay:0.20s;cursor:pointer">
+          <div style="font-size:28px;margin-bottom:12px;opacity:0.8">🏢</div>
+          <div class="project-name">Portfólio de Clientes</div>
+          <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">LTV, histórico de contratos, satisfação e oportunidades de upsell por cliente.</p>
+          <div style="display:flex;gap:6px">
+            <span class="badge badge-metal">Trimestral</span>
+          </div>
+          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%">Gerar →</button>
+        </div>
+
+        <div class="project-card shine-corner" style="animation-delay:0.25s;cursor:pointer">
+          <div style="font-size:28px;margin-bottom:12px;opacity:0.8">📅</div>
+          <div class="project-name">Fluxo de Caixa</div>
+          <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">Projeção de entradas e saídas para os próximos 90 dias com alertas de saldo.</p>
+          <div style="display:flex;gap:6px">
+            <span class="badge badge-metal">Semanal</span>
+            <span class="badge badge-metal">90 dias</span>
+          </div>
+          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%">Gerar →</button>
+        </div>
+
+        <div class="project-card shine-corner" style="animation-delay:0.30s;cursor:pointer">
+          <div style="font-size:28px;margin-bottom:12px;opacity:0.8">⚡</div>
+          <div class="project-name">Executive Summary</div>
+          <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">Resumo executivo completo para apresentação a diretores e stakeholders.</p>
+          <div style="display:flex;gap:6px">
+            <span class="badge badge-metal">Mensal</span>
+            <span class="badge badge-danger">Premium</span>
+          </div>
+          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%">Gerar →</button>
+        </div>
+      </div>
+
+      <!-- Últimos relatórios gerados -->
+      <div>
+        <div class="section-header">
+          <span class="section-title">Relatórios Gerados Recentemente</span>
+        </div>
+        <div class="chart-card">
+          <div class="card-body" style="padding:8px">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Relatório</th>
+                  <th>Período</th>
+                  <th>Gerado por</th>
+                  <th>Data</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div style="font-weight:600;color:var(--text)">Desempenho de Projetos</div></td>
+                  <td><span class="badge badge-metal">Março 2026</span></td>
+                  <td style="color:var(--text2)">Carla Matos</td>
+                  <td style="font-family:var(--font-mono);font-size:11px;color:var(--text3)">01/04/2026</td>
+                  <td style="text-align:right"><button class="btn btn-ghost btn-sm">↓ PDF</button></td>
+                </tr>
+                <tr>
+                  <td><div style="font-weight:600;color:var(--text)">DRE Simplificado</div></td>
+                  <td><span class="badge badge-metal">Q1 2026</span></td>
+                  <td style="color:var(--text2)">Admin Nexus</td>
+                  <td style="font-family:var(--font-mono);font-size:11px;color:var(--text3)">01/04/2026</td>
+                  <td style="text-align:right"><button class="btn btn-ghost btn-sm">↓ PDF</button></td>
+                </tr>
+                <tr>
+                  <td><div style="font-weight:600;color:var(--text)">Carga de Colaboradores</div></td>
+                  <td><span class="badge badge-metal">Semana 17</span></td>
+                  <td style="color:var(--text2)">Carla Matos</td>
+                  <td style="font-family:var(--font-mono);font-size:11px;color:var(--text3)">25/04/2026</td>
+                  <td style="text-align:right"><button class="btn btn-ghost btn-sm">↓ PDF</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

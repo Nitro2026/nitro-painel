@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Configurações</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <script src="assets/js/data.js"></script>
+  <style>
+    .config-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden; }
+    .config-section-title { padding:14px 18px; border-bottom:1px solid var(--border); font-family:var(--font-mono); font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text2); background:linear-gradient(135deg,var(--surface2),var(--surface)); }
+    .config-row { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px solid var(--border); transition:background var(--t-fast); }
+    .config-row:last-child { border-bottom:none; }
+    .config-row:hover { background:var(--surface2); }
+    .config-label { font-size:13px; font-weight:600; color:var(--text); margin-bottom:2px; }
+    .config-desc { font-size:11px; color:var(--text3); }
+    .toggle { width:40px; height:22px; border-radius:20px; background:var(--surface3); border:1px solid var(--border2); position:relative; cursor:pointer; transition:all var(--t-fast); flex-shrink:0; }
+    .toggle.on { background:var(--accent); border-color:var(--accent2); box-shadow:0 0 12px rgba(74,144,217,0.3); }
+    .toggle::after { content:''; position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:#fff; transition:transform var(--t-fast); }
+    .toggle.on::after { transform:translateX(18px); }
+    .input-field { background:var(--surface2); border:1px solid var(--border); border-radius:var(--r-md); padding:7px 12px; color:var(--text); font-family:var(--font-ui); font-size:12px; outline:none; transition:all var(--t-fast); min-width:200px; }
+    .input-field:focus { border-color:var(--border2); box-shadow:0 0 0 3px rgba(74,144,217,0.1); }
+  </style>
+</head>
+<body data-page="configuracoes">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      
+      <div class="logo-text">
+        <span class="logo-name" data-bind="empresa">NITRO AGENCIA DIGITAL</span>
+        <span class="logo-sub">Gestão Empresarial</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-section-label">Principal</span>
+      <a href="index.html" class="nav-item" data-page="dashboard"><div class="nav-icon">⬡</div>Dashboard</a>
+      <a href="projetos.html" class="nav-item" data-page="projetos"><div class="nav-icon">◈</div>Projetos<span class="nav-badge">12</span></a>
+      <a href="clientes.html" class="nav-item" data-page="clientes"><div class="nav-icon">◉</div>Clientes</a>
+      <a href="financeiro.html" class="nav-item" data-page="financeiro"><div class="nav-icon">◎</div>Financeiro</a>
+      <a href="colaboradores.html" class="nav-item" data-page="colaboradores"><div class="nav-icon">◍</div>Colaboradores</a>
+      <span class="nav-section-label">Operações</span>
+      <a href="tarefas.html" class="nav-item" data-page="tarefas"><div class="nav-icon">✦</div>Tarefas<span class="nav-badge">7</span></a>
+      <a href="relatorios.html" class="nav-item" data-page="relatorios"><div class="nav-icon">▣</div>Relatórios</a>
+      <span class="nav-section-label">Sistema</span>
+      <a href="configuracoes.html" class="nav-item" data-page="configuracoes"><div class="nav-icon">⚙</div>Configurações</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">A<span class="user-online"></span></div>
+        <div class="user-info">
+          <div class="user-name">Admin Nexus</div>
+          <div class="user-role">Administrador</div>
+        </div>
+        <span class="user-plan">PRO</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px;justify-content:center;border-color:rgba(239,68,68,0.25);color:var(--danger)" onclick="logout()">↩ Sair</button>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+  <div class="main-wrapper">
+    <header class="topbar">
+      <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu"><span></span><span></span><span></span></button>
+      <div class="topbar-title">
+        <div class="topbar-page">Configurações</div>
+        <div class="topbar-breadcrumb">Gerenciar preferências do sistema</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary btn-sm" onclick="salvarConfiguracoes()">Salvar Alterações</button>
+      </div>
+    </header>
+
+    <main class="content page-enter">
+
+      <div class="g2" style="align-items:start">
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+
+          <!-- Perfil -->
+          <div class="config-section">
+            <div class="config-section-title">Perfil da Empresa</div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Nome da Empresa</div>
+                <div class="config-desc">Aparece nos relatórios e faturas</div>
+              </div>
+              <input class="input-field" id="cfg-empresa" value="Nexus Gestão Empresarial">
+            </div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">CNPJ</div>
+                <div class="config-desc">Para emissão de notas fiscais</div>
+              </div>
+              <input class="input-field" id="cfg-cnpj" value="12.345.678/0001-90">
+            </div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">E-mail Padrão</div>
+                <div class="config-desc">Recebe notificações do sistema</div>
+              </div>
+              <input class="input-field" id="cfg-email" type="email" value="admin@nexus.com.br">
+            </div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Fuso Horário</div>
+                <div class="config-desc">Base para datas e alertas</div>
+              </div>
+              <select class="input-field" id="cfg-fuso" style="cursor:pointer">
+                <option selected>América/São Paulo (UTC-3)</option>
+                <option>América/Manaus (UTC-4)</option>
+                <option>America/Recife (UTC-3)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Financeiro -->
+          <div class="config-section">
+            <div class="config-section-title">Configurações Financeiras</div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Moeda Padrão</div>
+                <div class="config-desc">Usada em todos os cálculos</div>
+              </div>
+              <select class="input-field" id="cfg-moeda" style="cursor:pointer">
+                <option selected>BRL — Real Brasileiro</option>
+                <option>USD — Dólar Americano</option>
+                <option>EUR — Euro</option>
+              </select>
+            </div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Alerta de Fatura Vencida</div>
+                <div class="config-desc">Quantos dias antes de alertar</div>
+              </div>
+              <input class="input-field" id="cfg-alerta" type="number" value="3" style="min-width:80px;max-width:80px">
+            </div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Taxa de Impostos Padrão</div>
+                <div class="config-desc">Aplicada automaticamente em novas faturas</div>
+              </div>
+              <input class="input-field" id="cfg-taxa" value="8.65%" style="min-width:100px;max-width:100px">
+            </div>
+          </div>
+
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+
+          <!-- Notificações -->
+          <div class="config-section">
+            <div class="config-section-title">Notificações</div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Prazo de projeto se aproximando</div>
+                <div class="config-desc">Alerta 5 dias antes do prazo</div>
+              </div>
+              <div id="tog-prazo" class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Nova tarefa atribuída</div>
+                <div class="config-desc">Notificar colaborador por e-mail</div>
+              </div>
+              <div id="tog-tarefa" class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Fatura paga</div>
+                <div class="config-desc">Confirmação de recebimento</div>
+              </div>
+              <div id="tog-fatura" class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Relatório semanal automático</div>
+                <div class="config-desc">Envia toda segunda-feira às 9h</div>
+              </div>
+              <div id="tog-relatorio" class="toggle" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Carga crítica de colaborador</div>
+                <div class="config-desc">Alerta quando ultrapassar 90%</div>
+              </div>
+              <div id="tog-carga" class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+
+          <!-- Sistema -->
+          <div class="config-section">
+            <div class="config-section-title">Sistema</div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Versão</div>
+                <div class="config-desc">Nexus Gestão v1.0.0</div>
+              </div>
+              <span class="badge badge-success">Atualizado</span>
+            </div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Backup automático</div>
+                <div class="config-desc">Diário às 2h da manhã</div>
+              </div>
+              <div id="tog-backup" class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Plano atual</div>
+                <div class="config-desc">Renova em 01/Mai/2026</div>
+              </div>
+              <span class="badge badge-metal">PRO</span>
+            </div>
+            <div class="config-row">
+              <div>
+                <div class="config-label">Limpar dados de demonstração</div>
+                <div class="config-desc">Remove clientes e projetos de exemplo</div>
+              </div>
+              <button class="btn btn-ghost btn-sm" style="border-color:var(--danger);color:var(--danger)" onclick="showToast('Dados de demonstração removidos','success')">Limpar</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    // Carrega os valores salvos nos campos
+    (function loadSaved() {
+      const s = getSettings();
+      const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+      const tog = (id, val) => { const el = document.getElementById(id); if (el) el.classList.toggle('on', !!val); };
+      set('cfg-empresa', s.empresa);
+      set('cfg-cnpj', s.cnpj);
+      set('cfg-email', s.email);
+      set('cfg-fuso', s.fuso);
+      set('cfg-moeda', s.moeda);
+      set('cfg-alerta', s.alerta_fatura);
+      set('cfg-taxa', s.taxa_imposto);
+      tog('tog-prazo', s.notif_prazo);
+      tog('tog-tarefa', s.notif_tarefa);
+      tog('tog-fatura', s.notif_fatura);
+      tog('tog-relatorio', s.notif_relatorio);
+      tog('tog-carga', s.notif_carga);
+      tog('tog-backup', s.backup);
+    })();
+
+    function salvarConfiguracoes() {
+      const val = id => document.getElementById(id)?.value || '';
+      const on  = id => document.getElementById(id)?.classList.contains('on') || false;
+
+      const empresa = val('cfg-empresa').trim();
+      if (!empresa) { showToast('Informe o nome da empresa', 'error'); return; }
+
+      saveSettings({
+        empresa,
+        cnpj:          val('cfg-cnpj'),
+        email:         val('cfg-email'),
+        fuso:          val('cfg-fuso'),
+        moeda:         val('cfg-moeda'),
+        alerta_fatura: val('cfg-alerta'),
+        taxa_imposto:  val('cfg-taxa'),
+        notif_prazo:    on('tog-prazo'),
+        notif_tarefa:   on('tog-tarefa'),
+        notif_fatura:   on('tog-fatura'),
+        notif_relatorio:on('tog-relatorio'),
+        notif_carga:    on('tog-carga'),
+        backup:         on('tog-backup'),
+      });
+
+      // Atualiza nome da empresa visível na sidebar/logo
+      applySettings();
+
+      showToast('Configurações salvas com sucesso!', 'success');
+    }
+  </script>
+</body>
+</html>

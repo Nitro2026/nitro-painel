@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Financeiro</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <script src="assets/js/data.js"></script>
+</head>
+<body data-page="financeiro">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      
+      <div class="logo-text">
+        <span class="logo-name" data-bind="empresa">NITRO AGENCIA DIGITAL</span>
+        <span class="logo-sub">Gestão Empresarial</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-section-label">Principal</span>
+      <a href="index.html" class="nav-item" data-page="dashboard"><div class="nav-icon">⬡</div>Dashboard</a>
+      <a href="projetos.html" class="nav-item" data-page="projetos"><div class="nav-icon">◈</div>Projetos<span class="nav-badge">12</span></a>
+      <a href="clientes.html" class="nav-item" data-page="clientes"><div class="nav-icon">◉</div>Clientes</a>
+      <a href="financeiro.html" class="nav-item" data-page="financeiro"><div class="nav-icon">◎</div>Financeiro</a>
+      <a href="colaboradores.html" class="nav-item" data-page="colaboradores"><div class="nav-icon">◍</div>Colaboradores</a>
+      <span class="nav-section-label">Operações</span>
+      <a href="tarefas.html" class="nav-item" data-page="tarefas"><div class="nav-icon">✦</div>Tarefas<span class="nav-badge">7</span></a>
+      <a href="relatorios.html" class="nav-item" data-page="relatorios"><div class="nav-icon">▣</div>Relatórios</a>
+      <span class="nav-section-label">Sistema</span>
+      <a href="configuracoes.html" class="nav-item" data-page="configuracoes"><div class="nav-icon">⚙</div>Configurações</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">A<span class="user-online"></span></div>
+        <div class="user-info">
+          <div class="user-name">Admin Nexus</div>
+          <div class="user-role">Administrador</div>
+        </div>
+        <span class="user-plan">PRO</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px;justify-content:center;border-color:rgba(239,68,68,0.25);color:var(--danger)" onclick="logout()">↩ Sair</button>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+  <div class="main-wrapper">
+    <header class="topbar">
+      <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu"><span></span><span></span><span></span></button>
+      <div class="topbar-title">
+        <div class="topbar-page">Financeiro</div>
+        <div class="topbar-breadcrumb">Controle financeiro · Abril 2026</div>
+      </div>
+      <div class="topbar-actions">
+        <div class="search-box">
+          <span class="search-icon">⌕</span>
+          <input type="text" placeholder="Buscar transação...">
+        </div>
+        <div class="icon-btn" data-tip="Exportar">↓</div>
+        <button class="btn btn-primary btn-sm" onclick="modalNovaEntradaForm()">+ Nova Entrada</button>
+      </div>
+    </header>
+
+    <main class="content page-enter">
+
+      <!-- KPIs financeiros -->
+      <div class="kpi-grid">
+        <div class="kpi-card success shine-corner">
+          <div class="kpi-icon green">↑</div>
+          <div class="kpi-label">Total Entradas</div>
+          <div class="kpi-value success" data-count="128500" data-prefix="R$ ">R$ 0</div>
+          <div class="kpi-sub"><span class="kpi-trend up">↑ 12%</span> vs mês anterior</div>
+        </div>
+        <div class="kpi-card danger shine-corner">
+          <div class="kpi-icon red">↓</div>
+          <div class="kpi-label">Total Saídas</div>
+          <div class="kpi-value danger" data-count="43200" data-prefix="R$ ">R$ 0</div>
+          <div class="kpi-sub"><span class="kpi-trend down">↓ 3%</span> vs mês anterior</div>
+        </div>
+        <div class="kpi-card shine-corner">
+          <div class="kpi-icon blue">◎</div>
+          <div class="kpi-label">Saldo Líquido</div>
+          <div class="kpi-value accent" data-count="85300" data-prefix="R$ ">R$ 0</div>
+          <div class="kpi-sub"><span class="kpi-trend up">↑ 66%</span> de margem</div>
+        </div>
+        <div class="kpi-card warning shine-corner">
+          <div class="kpi-icon yellow">⏱</div>
+          <div class="kpi-label">A Receber</div>
+          <div class="kpi-value warning" data-count="40200" data-prefix="R$ ">R$ 0</div>
+          <div class="kpi-sub">3 faturas pendentes</div>
+        </div>
+      </div>
+
+      <!-- Gráfico de barras mensal -->
+      <div class="chart-card shine-corner">
+        <div class="chart-header">
+          <span class="chart-title">Fluxo de Caixa · 2026</span>
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="display:flex;align-items:center;gap:6px">
+              <div style="width:10px;height:10px;border-radius:3px;background:var(--success)"></div>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Entradas</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <div style="width:10px;height:10px;border-radius:3px;background:var(--danger)"></div>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Saídas</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;align-items:flex-end;gap:14px;height:180px;padding-bottom:8px">
+            <!-- Meses simulados -->
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+              <div style="width:100%;display:flex;gap:3px;align-items:flex-end;height:150px">
+                <div style="flex:1;border-radius:4px 4px 0 0;background:var(--success);opacity:0.7;transition:height 1s" data-h="90" style="height:0"></div>
+                <div style="flex:1;border-radius:4px 4px 0 0;background:var(--danger);opacity:0.7;transition:height 1s" data-h="40" style="height:0"></div>
+              </div>
+              <span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">Jan</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+              <div style="width:100%;display:flex;gap:3px;align-items:flex-end;height:150px">
+                <div class="bar" data-h="110" style="flex:1;border-radius:4px 4px 0 0;background:var(--success);opacity:0.7;height:0"></div>
+                <div class="bar" data-h="55" style="flex:1;border-radius:4px 4px 0 0;background:var(--danger);opacity:0.7;height:0"></div>
+              </div>
+              <span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">Fev</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+              <div style="width:100%;display:flex;gap:3px;align-items:flex-end;height:150px">
+                <div class="bar" data-h="95" style="flex:1;border-radius:4px 4px 0 0;background:var(--success);opacity:0.7;height:0"></div>
+                <div class="bar" data-h="48" style="flex:1;border-radius:4px 4px 0 0;background:var(--danger);opacity:0.7;height:0"></div>
+              </div>
+              <span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">Mar</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+              <div style="width:100%;display:flex;gap:3px;align-items:flex-end;height:150px">
+                <div class="bar" data-h="140" style="flex:1;border-radius:4px 4px 0 0;background:var(--success);height:0;border:2px solid rgba(34,197,94,0.3)"></div>
+                <div class="bar" data-h="50" style="flex:1;border-radius:4px 4px 0 0;background:var(--danger);height:0;border:2px solid rgba(239,68,68,0.3)"></div>
+              </div>
+              <span style="font-family:var(--font-mono);font-size:9px;color:var(--accent2);font-weight:600">Abr ←</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+              <div style="width:100%;display:flex;gap:3px;align-items:flex-end;height:150px">
+                <div style="flex:1;border-radius:4px 4px 0 0;background:var(--surface3);height:70px;border:1px dashed var(--border2)"></div>
+                <div style="flex:1;border-radius:4px 4px 0 0;background:var(--surface3);height:35px;border:1px dashed var(--border2)"></div>
+              </div>
+              <span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">Mai</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+              <div style="width:100%;display:flex;gap:3px;align-items:flex-end;height:150px">
+                <div style="flex:1;border-radius:4px 4px 0 0;background:var(--surface3);height:80px;border:1px dashed var(--border2)"></div>
+                <div style="flex:1;border-radius:4px 4px 0 0;background:var(--surface3);height:40px;border:1px dashed var(--border2)"></div>
+              </div>
+              <span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">Jun</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela de transações + faturas -->
+      <div class="g2">
+
+        <!-- Transações recentes -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <span class="chart-title">Transações Recentes</span>
+            <span class="badge badge-metal">Abril 2026</span>
+          </div>
+          <div class="card-body" style="padding:8px">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Descrição</th>
+                  <th>Tipo</th>
+                  <th>Valor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div style="font-weight:600;color:var(--text)">Recebimento Tech Corp</div>
+                    <div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">28/04/2026 · Fatura #2844</div>
+                  </td>
+                  <td><span class="badge badge-success">Entrada</span></td>
+                  <td><span style="font-family:var(--font-mono);font-weight:700;color:var(--success)">+R$ 22.500</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="font-weight:600;color:var(--text)">Fornecedor DevTools</div>
+                    <div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">27/04/2026 · NF #0089</div>
+                  </td>
+                  <td><span class="badge badge-danger">Saída</span></td>
+                  <td><span style="font-family:var(--font-mono);font-weight:700;color:var(--danger)">-R$ 3.200</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="font-weight:600;color:var(--text)">Recebimento Inova LTDA</div>
+                    <div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">25/04/2026 · Fatura #2845</div>
+                  </td>
+                  <td><span class="badge badge-success">Entrada</span></td>
+                  <td><span style="font-family:var(--font-mono);font-weight:700;color:var(--success)">+R$ 14.000</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="font-weight:600;color:var(--text)">Folha de Pagamento</div>
+                    <div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">25/04/2026 · Competência Abr</div>
+                  </td>
+                  <td><span class="badge badge-danger">Saída</span></td>
+                  <td><span style="font-family:var(--font-mono);font-weight:700;color:var(--danger)">-R$ 28.000</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="font-weight:600;color:var(--text)">Recebimento Global</div>
+                    <div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">20/04/2026 · Fatura #2840</div>
+                  </td>
+                  <td><span class="badge badge-success">Entrada</span></td>
+                  <td><span style="font-family:var(--font-mono);font-weight:700;color:var(--success)">+R$ 35.000</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="font-weight:600;color:var(--text)">Aluguel Escritório</div>
+                    <div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">10/04/2026 · Recorrente</div>
+                  </td>
+                  <td><span class="badge badge-danger">Saída</span></td>
+                  <td><span style="font-family:var(--font-mono);font-weight:700;color:var(--danger)">-R$ 8.500</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Faturas pendentes -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <span class="chart-title">Faturas em Aberto</span>
+            <button class="btn btn-primary btn-sm" onclick="modalNovaFaturaForm()">+ Nova Fatura</button>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:8px">
+
+            <div style="padding:14px;background:var(--surface2);border-radius:var(--r-md);border:1px solid var(--border);border-left:3px solid var(--warning)">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                <div>
+                  <div style="font-weight:700;font-size:13px;color:var(--text)">Fatura #2847</div>
+                  <div style="font-size:11px;color:var(--text3)">Global Soluções · E-commerce</div>
+                </div>
+                <span class="badge badge-warning">Aguardando</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--warning)">R$ 15.000</span>
+                <span style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Vence: 02/Mai/2026</span>
+              </div>
+            </div>
+
+            <div style="padding:14px;background:var(--surface2);border-radius:var(--r-md);border:1px solid var(--border);border-left:3px solid var(--warning)">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                <div>
+                  <div style="font-weight:700;font-size:13px;color:var(--text)">Fatura #2848</div>
+                  <div style="font-size:11px;color:var(--text3)">Tech Corp · BI Dashboard</div>
+                </div>
+                <span class="badge badge-warning">Enviada</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--warning)">R$ 17.200</span>
+                <span style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Vence: 10/Mai/2026</span>
+              </div>
+            </div>
+
+            <div style="padding:14px;background:var(--surface2);border-radius:var(--r-md);border:1px solid var(--border);border-left:3px solid var(--danger)">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                <div>
+                  <div style="font-weight:700;font-size:13px;color:var(--text)">Fatura #2841</div>
+                  <div style="font-size:11px;color:var(--text3)">StartUp XYZ · Portal RH</div>
+                </div>
+                <span class="badge badge-danger">Em Atraso</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--danger)">R$ 8.000</span>
+                <span style="font-family:var(--font-mono);font-size:10px;color:var(--danger)">Venceu: 15/Abr/2026</span>
+              </div>
+            </div>
+
+            <div class="sep-metal"></div>
+
+            <div style="display:flex;justify-content:space-between;padding:10px 0">
+              <span style="font-family:var(--font-mono);font-size:11px;color:var(--text3)">Total em aberto</span>
+              <span style="font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--accent2)">R$ 40.200</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+/* ============================================
+   TOKENS SEMÂNTICOS — SISTEMA AZUL METÁLICO
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bebas+Neue&display=swap');
+
+:root {
+  /* Superfícies */
+  --bg:       #08101f;
+  --surface:  #0d1428;
+  --surface2: #111d38;
+  --surface3: #162244;
+  --surface4: #1a2a52;
+
+  /* Bordas metálicas */
+  --border:   rgba(42, 82, 152, 0.25);
+  --border2:  rgba(74, 144, 217, 0.45);
+  --border3:  rgba(106, 176, 240, 0.65);
+
+  /* Accent azul metálico */
+  --accent:      #4a90d9;
+  --accent2:     #6ab0f0;
+  --accent-dark: #2a5298;
+  --accent-low:  rgba(74, 144, 217, 0.10);
+  --accent-glow: rgba(74, 144, 217, 0.20);
+
+  /* Gradiente metálico */
+  --metal: linear-gradient(135deg, #2a5298 0%, #4a90d9 40%, #8bc4f0 60%, #4a90d9 80%, #2a5298 100%);
+  --metal-border: linear-gradient(135deg, #1e3a7a, #4a90d9, #8bc4f0, #4a90d9, #1e3a7a);
+  --metal-subtle: linear-gradient(135deg, rgba(42,82,152,0.4) 0%, rgba(74,144,217,0.6) 50%, rgba(42,82,152,0.4) 100%);
+
+  /* Semânticos */
+  --success: #22c55e;
+  --success-low: rgba(34,197,94,0.12);
+  --danger:  #ef4444;
+  --danger-low: rgba(239,68,68,0.12);
+  --warning: #f59e0b;
+  --warning-low: rgba(245,158,11,0.12);
+  --info:    #60a5fa;
+  --info-low: rgba(96,165,250,0.12);
+
+  /* Texto */
+  --text:  #e8f0fe;
+  --text2: #8ba4cc;
+  --text3: #4a6090;
+
+  /* Fontes */
+  --font-ui:   'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-disp: 'Bebas Neue', sans-serif;
+
+  /* Raios */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+
+  /* Sombras */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.5);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.6);
+  --shadow-accent: 0 0 20px rgba(74,144,217,0.25);
+  --shadow-glow: 0 0 40px rgba(74,144,217,0.15);
+
+  /* Sidebar */
+  --sidebar-w: 256px;
+  --topbar-h: 64px;
+
+  /* Transições */
+  --t-fast: 0.15s ease;
+  --t-med:  0.25s ease;
+  --t-slow: 0.4s cubic-bezier(0.22,0.68,0,1.2);
+}

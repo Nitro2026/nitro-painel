@@ -1,0 +1,8 @@
+[build]
+  publish = "."
+
+# Redireciona rotas desconhecidas para login
+[[redirects]]
+  from = "/*"
+  to   = "/login.html"
+  status = 200
