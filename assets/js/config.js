@@ -1,5 +1,5 @@
 // ==========================================
-// NEXUS — Configuração Supabase
+// Configuração Supabase
 // ==========================================
 // Preencha com as credenciais do seu projeto
 // Encontre em: supabase.com → Projeto → Settings → API

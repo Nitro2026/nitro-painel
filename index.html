@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXUS — Dashboard</title>
+  <title>Dashboard</title>
   <link rel="stylesheet" href="assets/css/main.css">
   <script src="assets/js/data.js"></script>
 </head>
@@ -19,21 +19,21 @@
     <nav class="sidebar-nav">
       <span class="nav-section-label">Principal</span>
       <a href="index.html" class="nav-item" data-page="dashboard"><div class="nav-icon">⬡</div>Dashboard<span class="nav-badge">AO VIVO</span></a>
-      <a href="projetos.html" class="nav-item" data-page="projetos"><div class="nav-icon">◈</div>Projetos<span class="nav-badge">12</span></a>
+      <a href="projetos.html" class="nav-item" data-page="projetos"><div class="nav-icon">◈</div>Projetos<span class="nav-badge" id="badge-projetos"></span></a>
       <a href="clientes.html" class="nav-item" data-page="clientes"><div class="nav-icon">◉</div>Clientes</a>
       <a href="financeiro.html" class="nav-item" data-page="financeiro"><div class="nav-icon">◎</div>Financeiro</a>
       <a href="colaboradores.html" class="nav-item" data-page="colaboradores"><div class="nav-icon">◍</div>Colaboradores</a>
       <span class="nav-section-label">Operações</span>
-      <a href="tarefas.html" class="nav-item" data-page="tarefas"><div class="nav-icon">✦</div>Tarefas<span class="nav-badge">7</span></a>
+      <a href="tarefas.html" class="nav-item" data-page="tarefas"><div class="nav-icon">✦</div>Tarefas<span class="nav-badge" id="badge-tarefas"></span></a>
       <a href="relatorios.html" class="nav-item" data-page="relatorios"><div class="nav-icon">▣</div>Relatórios</a>
       <span class="nav-section-label">Sistema</span>
       <a href="configuracoes.html" class="nav-item" data-page="configuracoes"><div class="nav-icon">⚙</div>Configurações</a>
     </nav>
     <div class="sidebar-footer">
       <div class="user-card">
-        <div class="user-avatar">A<span class="user-online"></span></div>
+        <div class="user-avatar">U<span class="user-online"></span></div>
         <div class="user-info">
-          <div class="user-name">Admin Nexus</div>
+          <div class="user-name">Usuário</div>
           <div class="user-role">Administrador</div>
         </div>
         <span class="user-plan">PRO</span>
@@ -48,7 +48,7 @@
       <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu"><span></span><span></span><span></span></button>
       <div class="topbar-title">
         <div class="topbar-page">Dashboard</div>
-        <div class="topbar-breadcrumb">Visão geral · Hoje, 28 de Abril de 2026</div>
+        <div class="topbar-breadcrumb" id="dash-date">Visão geral</div>
       </div>
       <div class="topbar-actions">
         <div class="search-box">
@@ -68,74 +68,26 @@
         <div class="kpi-card info shine-corner">
           <div class="kpi-icon blue">◈</div>
           <div class="kpi-label">Projetos Ativos</div>
-          <div class="kpi-value accent" data-count="12">0</div>
-          <div class="kpi-sub"><span class="kpi-trend up">↑ 3</span> este mês</div>
+          <div class="kpi-value accent" id="kpi-proj-ativos">0</div>
+          <div class="kpi-sub">em andamento</div>
         </div>
         <div class="kpi-card success shine-corner">
           <div class="kpi-icon green">◉</div>
           <div class="kpi-label">Clientes Ativos</div>
-          <div class="kpi-value success" data-count="47">0</div>
-          <div class="kpi-sub"><span class="kpi-trend up">↑ 8</span> vs mês anterior</div>
+          <div class="kpi-value success" id="kpi-cli-ativos">0</div>
+          <div class="kpi-sub">na carteira</div>
         </div>
         <div class="kpi-card warning shine-corner">
           <div class="kpi-icon yellow">◎</div>
-          <div class="kpi-label">Faturamento Mensal</div>
-          <div class="kpi-value warning" data-count="128500" data-prefix="R$ ">0</div>
-          <div class="kpi-sub"><span class="kpi-trend up">↑ 12%</span> vs abril anterior</div>
+          <div class="kpi-label">Faturamento Total</div>
+          <div class="kpi-value warning" id="kpi-faturamento">R$ 0,00</div>
+          <div class="kpi-sub">todas as entradas</div>
         </div>
         <div class="kpi-card danger shine-corner">
           <div class="kpi-icon red">⚠</div>
           <div class="kpi-label">Tarefas Pendentes</div>
-          <div class="kpi-value danger" data-count="23">0</div>
-          <div class="kpi-sub"><span class="kpi-trend down">↓ 5</span> vs semana passada</div>
-        </div>
-      </div>
-
-      <!-- Gráfico + Atividade -->
-      <div class="g-sidebar">
-        <div class="chart-card shine-corner">
-          <div class="chart-header">
-            <span class="chart-title">Projetos Entregues · 2026</span>
-            <div style="display:flex;gap:8px">
-              <span class="badge badge-metal">Mensal</span>
-              <button class="btn btn-ghost btn-sm">Ver Detalhe</button>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="chart-body" style="height:180px;align-items:flex-end;gap:10px;">
-              <div class="bar-group"><div class="bar-wrap"><div class="bar muted" data-h="60" style="height:0"></div></div><div class="bar-label">Jan</div></div>
-              <div class="bar-group"><div class="bar-wrap"><div class="bar muted" data-h="90" style="height:0"></div></div><div class="bar-label">Fev</div></div>
-              <div class="bar-group"><div class="bar-wrap"><div class="bar" data-h="75" style="height:0"></div></div><div class="bar-label">Mar</div></div>
-              <div class="bar-group"><div class="bar-wrap"><div class="bar" data-h="130" style="height:0"></div></div><div class="bar-label">Abr</div></div>
-              <div class="bar-group"><div class="bar-wrap"><div class="bar muted" data-h="40" style="height:0"></div></div><div class="bar-label">Mai</div></div>
-              <div class="bar-group"><div class="bar-wrap"><div class="bar muted" data-h="20" style="height:0"></div></div><div class="bar-label">Jun</div></div>
-            </div>
-            <div style="display:flex;gap:16px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
-              <div style="display:flex;align-items:center;gap:6px">
-                <div style="width:10px;height:10px;border-radius:3px;background:var(--metal);background-size:200%;animation:shimmer 2s linear infinite"></div>
-                <span style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Entregue</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:6px">
-                <div style="width:10px;height:10px;border-radius:3px;background:var(--surface3)"></div>
-                <span style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Projeção</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="chart-card">
-          <div class="chart-header">
-            <span class="chart-title">Atividade Recente</span>
-            <span class="badge badge-success">AO VIVO</span>
-          </div>
-          <div class="card-body" style="padding:12px 16px">
-            <div class="activity-item"><div class="activity-dot success"></div><div class="activity-content"><div class="activity-text"><strong>Projeto Alpha</strong> marcado como concluído</div><div class="activity-time">há 12 min · Marcos Silva</div></div></div>
-            <div class="activity-item"><div class="activity-dot info"></div><div class="activity-content"><div class="activity-text">Novo cliente <strong>Tech Corp</strong> cadastrado</div><div class="activity-time">há 38 min · Ana Lima</div></div></div>
-            <div class="activity-item"><div class="activity-dot warning"></div><div class="activity-content"><div class="activity-text">Fatura <strong>#2847</strong> aguardando aprovação</div><div class="activity-time">há 1h · Sistema</div></div></div>
-            <div class="activity-item"><div class="activity-dot success"></div><div class="activity-content"><div class="activity-text"><strong>R$ 14.500</strong> recebido — Cliente Inova</div><div class="activity-time">há 2h · Financeiro</div></div></div>
-            <div class="activity-item"><div class="activity-dot danger"></div><div class="activity-content"><div class="activity-text">Prazo <strong>Projeto Omega</strong> em 2 dias</div><div class="activity-time">há 3h · Alerta automático</div></div></div>
-            <div class="activity-item"><div class="activity-dot info"></div><div class="activity-content"><div class="activity-text"><strong>Pedro Alves</strong> adicionado ao Projeto Beta</div><div class="activity-time">há 4h · Marcos Silva</div></div></div>
-          </div>
+          <div class="kpi-value danger" id="kpi-tar-pendentes">0</div>
+          <div class="kpi-sub">aguardando conclusão</div>
         </div>
       </div>
 
@@ -145,68 +97,7 @@
           <span class="section-title">Projetos em Andamento</span>
           <a href="projetos.html" class="section-link">Ver todos →</a>
         </div>
-        <div class="g3">
-
-          <div class="project-card shine-corner" style="animation-delay:0.1s;cursor:pointer"
-            onclick="modalProjeto({nome:'Projeto Alpha',cliente:'Tech Corp',valor:'R$ 45.000',status:'Em Andamento',prazo:'05/Mai/2026',progress:78,descricao:'Desenvolvimento do sistema de gestão integrado para o cliente Tech Corp, com módulos de controle de processos, relatórios e integração de APIs.',equipe:[{inicial:'M',cor:'',nome:'Marcos Silva'},{inicial:'A',cor:'green',nome:'Ana Lima'},{inicial:'P',cor:'purple',nome:'Pedro Alves'}]})">
-            <div class="project-header">
-              <div><div class="project-name">Projeto Alpha</div><div class="project-client">Cliente: Tech Corp</div></div>
-              <span class="badge badge-warning">Em Andamento</span>
-            </div>
-            <div class="progress-wrap">
-              <div class="progress-label"><span>Progresso</span><span>78%</span></div>
-              <div class="progress-bar"><div class="progress-fill" data-w="78" style="width:0%"></div></div>
-            </div>
-            <div class="project-meta">
-              <div class="avatar-group">
-                <div class="avatar-sm" data-tip="Marcos S.">M</div>
-                <div class="avatar-sm green" data-tip="Ana L.">A</div>
-                <div class="avatar-sm purple" data-tip="Pedro A.">P</div>
-              </div>
-              <span style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Prazo: 05/Mai</span>
-            </div>
-          </div>
-
-          <div class="project-card shine-corner" style="animation-delay:0.15s;cursor:pointer"
-            onclick="modalProjeto({nome:'Sistema Inova',cliente:'Inova LTDA',valor:'R$ 28.000',status:'Em Revisão',prazo:'30/Abr/2026',progress:92,descricao:'Plataforma de automação de processos internos para a Inova LTDA, com integração de NF-e e painel de controle administrativo.',equipe:[{inicial:'C',cor:'orange',nome:'Carla Matos'},{inicial:'M',cor:'',nome:'Marcos Silva'}]})">
-            <div class="project-header">
-              <div><div class="project-name">Sistema Inova</div><div class="project-client">Cliente: Inova LTDA</div></div>
-              <span class="badge badge-info">Em Revisão</span>
-            </div>
-            <div class="progress-wrap">
-              <div class="progress-label"><span>Progresso</span><span>92%</span></div>
-              <div class="progress-bar"><div class="progress-fill success" data-w="92" style="width:0%"></div></div>
-            </div>
-            <div class="project-meta">
-              <div class="avatar-group">
-                <div class="avatar-sm orange" data-tip="Carla M.">C</div>
-                <div class="avatar-sm" data-tip="Marcos S.">M</div>
-              </div>
-              <span style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Prazo: 30/Abr</span>
-            </div>
-          </div>
-
-          <div class="project-card shine-corner" style="animation-delay:0.2s;cursor:pointer"
-            onclick="modalProjeto({nome:'App Nexus Mobile',cliente:'Interno',valor:'R$ 0',status:'Atrasado',prazo:'15/Abr/2026',progress:45,descricao:'Aplicativo mobile para acesso ao sistema de gestão. Projeto interno com prazo crítico, necessita redistribuição de recursos.',equipe:[{inicial:'P',cor:'purple',nome:'Pedro Alves'},{inicial:'L',cor:'red',nome:'Lucas Torres'},{inicial:'A',cor:'green',nome:'Ana Lima'}]})">
-            <div class="project-header">
-              <div><div class="project-name">App Nexus Mobile</div><div class="project-client">Cliente: Interno</div></div>
-              <span class="badge badge-danger">Atrasado</span>
-            </div>
-            <div class="progress-wrap">
-              <div class="progress-label"><span>Progresso</span><span>45%</span></div>
-              <div class="progress-bar"><div class="progress-fill danger" data-w="45" style="width:0%"></div></div>
-            </div>
-            <div class="project-meta">
-              <div class="avatar-group">
-                <div class="avatar-sm purple" data-tip="Pedro A.">P</div>
-                <div class="avatar-sm red" data-tip="Lucas T.">L</div>
-                <div class="avatar-sm green" data-tip="Ana L.">A</div>
-              </div>
-              <span style="font-family:var(--font-mono);font-size:10px;color:var(--danger)">Prazo: 15/Abr</span>
-            </div>
-          </div>
-
-        </div>
+        <div class="g3" id="dash-projetos"></div>
       </div>
 
       <!-- Clientes + Financeiro -->
@@ -218,56 +109,50 @@
           </div>
           <div class="card-body" style="padding:8px">
             <table class="data-table">
-              <thead><tr><th>Cliente</th><th>Projetos</th><th>Status</th></tr></thead>
-              <tbody>
-                <tr>
-                  <td><div style="font-weight:600;color:var(--text)">Tech Corp</div><div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">techcorp@email.com</div></td>
-                  <td><span style="font-family:var(--font-mono);font-weight:600;color:var(--accent2)">3</span></td>
-                  <td><span class="badge badge-success">Ativo</span></td>
-                </tr>
-                <tr>
-                  <td><div style="font-weight:600;color:var(--text)">Inova LTDA</div><div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">inova@email.com</div></td>
-                  <td><span style="font-family:var(--font-mono);font-weight:600;color:var(--accent2)">1</span></td>
-                  <td><span class="badge badge-success">Ativo</span></td>
-                </tr>
-                <tr>
-                  <td><div style="font-weight:600;color:var(--text)">Global Soluções</div><div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">global@email.com</div></td>
-                  <td><span style="font-family:var(--font-mono);font-weight:600;color:var(--accent2)">2</span></td>
-                  <td><span class="badge badge-warning">Em Proposta</span></td>
-                </tr>
-                <tr>
-                  <td><div style="font-weight:600;color:var(--text)">StartUp XYZ</div><div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">xyz@email.com</div></td>
-                  <td><span style="font-family:var(--font-mono);font-weight:600;color:var(--accent2)">0</span></td>
-                  <td><span class="badge badge-info">Lead</span></td>
-                </tr>
-              </tbody>
+              <thead><tr><th>Cliente</th><th>Contato</th><th>Status</th></tr></thead>
+              <tbody id="dash-clientes"></tbody>
             </table>
           </div>
         </div>
 
         <div class="chart-card">
           <div class="chart-header">
-            <span class="chart-title">Resumo Financeiro · Abril</span>
+            <span class="chart-title">Resumo Financeiro</span>
             <a href="financeiro.html" class="section-link">Detalhes →</a>
           </div>
           <div class="card-body">
             <div style="display:flex;flex-direction:column;gap:10px">
               <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--surface2);border-radius:var(--r-md);border:1px solid var(--border);border-left:3px solid var(--success)">
-                <div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px">Entradas</div><div style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--success)" data-count="128500" data-prefix="R$ ">R$ 0</div></div>
+                <div>
+                  <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px">Entradas</div>
+                  <div style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--success)" id="dash-entradas">R$ 0,00</div>
+                </div>
                 <span style="font-size:22px;opacity:0.5">↑</span>
               </div>
               <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--surface2);border-radius:var(--r-md);border:1px solid var(--border);border-left:3px solid var(--danger)">
-                <div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px">Saídas</div><div style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--danger)" data-count="43200" data-prefix="R$ ">R$ 0</div></div>
+                <div>
+                  <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px">Saídas</div>
+                  <div style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--danger)" id="dash-saidas">R$ 0,00</div>
+                </div>
                 <span style="font-size:22px;opacity:0.5">↓</span>
               </div>
               <div class="sep-metal"></div>
               <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:linear-gradient(135deg,rgba(74,144,217,0.08),rgba(42,82,152,0.05));border-radius:var(--r-md);border:1px solid var(--border2)">
-                <div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px">Saldo Líquido</div><div style="font-family:var(--font-mono);font-size:22px;font-weight:700;background:var(--metal);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite" data-count="85300" data-prefix="R$ ">R$ 0</div></div>
-                <span class="badge badge-success">+66%</span>
+                <div>
+                  <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px">Saldo Líquido</div>
+                  <div style="font-family:var(--font-mono);font-size:22px;font-weight:700;background:var(--metal);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite" id="dash-saldo">R$ 0,00</div>
+                </div>
+                <span class="badge badge-metal" id="dash-saldo-badge">—</span>
               </div>
               <div style="display:flex;gap:8px;margin-top:4px">
-                <div style="flex:1;padding:10px;background:var(--surface2);border-radius:var(--r-md);border:1px solid var(--border);text-align:center"><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:4px">A Receber</div><div style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--warning)">R$ 32.000</div></div>
-                <div style="flex:1;padding:10px;background:var(--surface2);border-radius:var(--r-md);border:1px solid var(--border);text-align:center"><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:4px">Em Atraso</div><div style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--danger)">R$ 8.200</div></div>
+                <div style="flex:1;padding:10px;background:var(--surface2);border-radius:var(--r-md);border:1px solid var(--border);text-align:center">
+                  <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:4px">A Receber</div>
+                  <div style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--warning)" id="dash-receber">R$ 0,00</div>
+                </div>
+                <div style="flex:1;padding:10px;background:var(--surface2);border-radius:var(--r-md);border:1px solid var(--border);text-align:center">
+                  <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:4px">Faturas</div>
+                  <div style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--info)" id="dash-fat-count">0</div>
+                </div>
               </div>
             </div>
           </div>
@@ -283,37 +168,8 @@
         <div class="chart-card">
           <div class="card-body" style="padding:8px">
             <table class="data-table">
-              <thead><tr><th>Colaborador</th><th>Função</th><th>Projetos</th><th>Carga</th><th>Status</th></tr></thead>
-              <tbody>
-                <tr style="cursor:pointer" onclick="modalColaborador({nome:'Marcos Silva',cargo:'Dev Senior',email:'marcos@nexus.com',inicial:'M',cor:'',projetos:3,carga:85,cargaLabel:'Alta Carga',skills:['React','Node.js','TypeScript','MongoDB']})">
-                  <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar-sm" style="width:28px;height:28px;font-size:11px">M</div><div><div style="font-weight:600;color:var(--text)">Marcos Silva</div><div style="font-size:10px;color:var(--text3)">marcos@nexus.com</div></div></div></td>
-                  <td><span style="font-size:12px">Dev Senior</span></td>
-                  <td><span class="badge badge-metal">3 projetos</span></td>
-                  <td><div style="width:80px"><div class="progress-bar"><div class="progress-fill warning" data-w="85" style="width:0%"></div></div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:2px">85%</div></div></td>
-                  <td><span class="badge badge-warning">Alta</span></td>
-                </tr>
-                <tr style="cursor:pointer" onclick="modalColaborador({nome:'Ana Lima',cargo:'Designer UX/UI',email:'ana@nexus.com',inicial:'A',cor:'green',projetos:2,carga:60,cargaLabel:'Normal',skills:['Figma','CSS','Illustrator','UX Research']})">
-                  <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar-sm green" style="width:28px;height:28px;font-size:11px">A</div><div><div style="font-weight:600;color:var(--text)">Ana Lima</div><div style="font-size:10px;color:var(--text3)">ana@nexus.com</div></div></div></td>
-                  <td><span style="font-size:12px">Designer UX</span></td>
-                  <td><span class="badge badge-metal">2 projetos</span></td>
-                  <td><div style="width:80px"><div class="progress-bar"><div class="progress-fill success" data-w="60" style="width:0%"></div></div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:2px">60%</div></div></td>
-                  <td><span class="badge badge-success">Normal</span></td>
-                </tr>
-                <tr style="cursor:pointer" onclick="modalColaborador({nome:'Pedro Alves',cargo:'Dev Fullstack',email:'pedro@nexus.com',inicial:'P',cor:'purple',projetos:2,carga:95,cargaLabel:'Carga Crítica',skills:['Python','Vue.js','Django','PostgreSQL']})">
-                  <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar-sm purple" style="width:28px;height:28px;font-size:11px">P</div><div><div style="font-weight:600;color:var(--text)">Pedro Alves</div><div style="font-size:10px;color:var(--text3)">pedro@nexus.com</div></div></div></td>
-                  <td><span style="font-size:12px">Dev Fullstack</span></td>
-                  <td><span class="badge badge-metal">2 projetos</span></td>
-                  <td><div style="width:80px"><div class="progress-bar"><div class="progress-fill danger" data-w="95" style="width:0%"></div></div><div style="font-family:var(--font-mono);font-size:9px;color:var(--danger);margin-top:2px">95%</div></div></td>
-                  <td><span class="badge badge-danger">Crítica</span></td>
-                </tr>
-                <tr style="cursor:pointer" onclick="modalColaborador({nome:'Carla Matos',cargo:'Gerente de Projetos',email:'carla@nexus.com',inicial:'C',cor:'orange',projetos:4,carga:70,cargaLabel:'Normal',skills:['Scrum','Jira','Gestão Ágil','Excel']})">
-                  <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar-sm orange" style="width:28px;height:28px;font-size:11px">C</div><div><div style="font-weight:600;color:var(--text)">Carla Matos</div><div style="font-size:10px;color:var(--text3)">carla@nexus.com</div></div></div></td>
-                  <td><span style="font-size:12px">Gerente PM</span></td>
-                  <td><span class="badge badge-metal">4 projetos</span></td>
-                  <td><div style="width:80px"><div class="progress-bar"><div class="progress-fill" data-w="70" style="width:0%"></div></div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:2px">70%</div></div></td>
-                  <td><span class="badge badge-success">Normal</span></td>
-                </tr>
-              </tbody>
+              <thead><tr><th>Colaborador</th><th>Função</th><th>Carga</th><th>Status</th></tr></thead>
+              <tbody id="dash-colabs"></tbody>
             </table>
           </div>
         </div>
@@ -326,5 +182,119 @@
   <script src="assets/js/config.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
+  <script>
+    function renderDashboard() {
+      const projetos    = getData('projetos');
+      const clientes    = getData('clientes');
+      const colabs      = getData('colaboradores');
+      const tarefas     = getData('tarefas');
+      const transacoes  = getData('transacoes');
+      const faturas     = getData('faturas');
+
+      // KPIs
+      const projAtivos  = projetos.filter(p => p.status !== 'Concluído').length;
+      const cliAtivos   = clientes.filter(c => c.status === 'ativo').length;
+      const entradas    = transacoes.filter(t => t.tipo === 'Entrada').reduce((s, t) => s + t.valor, 0);
+      const saidas      = transacoes.filter(t => t.tipo === 'Saída').reduce((s, t) => s + t.valor, 0);
+      const saldo       = entradas - saidas;
+      const fatPend     = faturas.filter(f => f.status === 'pendente');
+      const aReceber    = fatPend.reduce((s, f) => s + f.valor, 0);
+      const tarPend     = tarefas.filter(t => t.status !== 'done').length;
+
+      document.getElementById('kpi-proj-ativos').textContent  = projAtivos;
+      document.getElementById('kpi-cli-ativos').textContent   = cliAtivos;
+      document.getElementById('kpi-faturamento').textContent  = 'R$ ' + formatMoney(entradas);
+      document.getElementById('kpi-tar-pendentes').textContent = tarPend;
+
+      // Financeiro
+      document.getElementById('dash-entradas').textContent = 'R$ ' + formatMoney(entradas);
+      document.getElementById('dash-saidas').textContent   = 'R$ ' + formatMoney(saidas);
+      document.getElementById('dash-saldo').textContent    = 'R$ ' + formatMoney(saldo);
+      document.getElementById('dash-receber').textContent  = 'R$ ' + formatMoney(aReceber);
+      document.getElementById('dash-fat-count').textContent = fatPend.length;
+      const pct = entradas > 0 ? Math.round((saldo / entradas) * 100) : 0;
+      document.getElementById('dash-saldo-badge').textContent = (pct >= 0 ? '+' : '') + pct + '%';
+
+      // Sidebar badges
+      const bProj = document.getElementById('badge-projetos');
+      if (bProj) bProj.textContent = projAtivos || '';
+      const bTar = document.getElementById('badge-tarefas');
+      if (bTar) bTar.textContent = tarPend || '';
+
+      // Date
+      const hoje = new Date();
+      const opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      document.getElementById('dash-date').textContent = 'Visão geral · ' + hoje.toLocaleDateString('pt-BR', opts);
+
+      // Projetos em andamento
+      const projGrid = document.getElementById('dash-projetos');
+      const ativos = projetos.filter(p => p.status !== 'Concluído').slice(0, 3);
+      if (!ativos.length) {
+        projGrid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px 20px">
+          <div style="font-size:32px;margin-bottom:10px;opacity:0.4">◈</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text2)">Nenhum projeto ativo</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Crie um projeto para começar</div>
+        </div>`;
+      } else {
+        projGrid.innerHTML = ativos.map((p, i) => {
+          const sb = statusBadge(p.status);
+          const pf = progressFill(p.progress || 0);
+          return `
+            <div class="project-card shine-corner" style="animation-delay:${(i * 0.05).toFixed(2)}s;cursor:pointer" onclick="window.location.href='projetos.html'">
+              <div class="project-header">
+                <div><div class="project-name">${p.nome}</div><div class="project-client">Cliente: ${p.cliente || '—'}</div></div>
+                <span class="badge ${sb}">${p.status}</span>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-label"><span>Progresso</span><span>${p.progress || 0}%</span></div>
+                <div class="progress-bar"><div class="progress-fill ${pf}" style="width:${p.progress || 0}%"></div></div>
+              </div>
+              <div class="project-meta">
+                <div class="avatar-group">
+                  ${p.responsavel ? `<div class="avatar-sm">${p.responsavel.charAt(0).toUpperCase()}</div>` : ''}
+                </div>
+                <span style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Prazo: ${formatDate(p.prazo)}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Clientes recentes
+      const cliTbody = document.getElementById('dash-clientes');
+      const recentes = clientes.slice(-5).reverse();
+      if (!recentes.length) {
+        cliTbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:30px;color:var(--text3)">Nenhum cliente cadastrado</td></tr>';
+      } else {
+        const statusMap = { ativo: ['badge-success', 'Ativo'], proposta: ['badge-warning', 'Em Proposta'], lead: ['badge-info', 'Lead'] };
+        cliTbody.innerHTML = recentes.map(c => {
+          const [cls, label] = statusMap[c.status] || ['badge-metal', c.status];
+          return `<tr>
+            <td><div style="font-weight:600;color:var(--text)">${c.empresa}</div><div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">${c.email || '—'}</div></td>
+            <td><span style="font-size:12px;color:var(--text2)">${c.contato || '—'}</span></td>
+            <td><span class="badge ${cls}">${label}</span></td>
+          </tr>`;
+        }).join('');
+      }
+
+      // Colaboradores
+      const colTbody = document.getElementById('dash-colabs');
+      if (!colabs.length) {
+        colTbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--text3)">Nenhum colaborador cadastrado</td></tr>';
+      } else {
+        colTbody.innerHTML = colabs.slice(0, 5).map(c => {
+          const ci = cargaInfo(c.carga);
+          return `<tr style="cursor:pointer" onclick="window.location.href='colaboradores.html'">
+            <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar-sm" style="width:28px;height:28px;font-size:11px">${c.nome.charAt(0).toUpperCase()}</div><div><div style="font-weight:600;color:var(--text)">${c.nome}</div><div style="font-size:10px;color:var(--text3)">${c.email || '—'}</div></div></div></td>
+            <td><span style="font-size:12px">${c.cargo || '—'}</span></td>
+            <td><div style="width:80px"><div class="progress-bar"><div class="progress-fill ${ci.fill}" style="width:${c.carga || 0}%"></div></div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:2px">${c.carga || 0}%</div></div></td>
+            <td><span class="badge ${ci.cls}">${ci.label}</span></td>
+          </tr>`;
+        }).join('');
+      }
+    }
+
+    renderDashboard();
+  </script>
 </body>
 </html>

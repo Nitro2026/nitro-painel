@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXUS — Tarefas</title>
+  <title>Tarefas</title>
   <link rel="stylesheet" href="assets/css/main.css">
   <script src="assets/js/data.js"></script>
   <style>
@@ -25,7 +25,6 @@
 
   <aside class="sidebar">
     <div class="sidebar-logo">
-      
       <div class="logo-text">
         <span class="logo-name" data-bind="empresa">NITRO AGENCIA DIGITAL</span>
         <span class="logo-sub">Gestão Empresarial</span>
@@ -34,21 +33,21 @@
     <nav class="sidebar-nav">
       <span class="nav-section-label">Principal</span>
       <a href="index.html" class="nav-item" data-page="dashboard"><div class="nav-icon">⬡</div>Dashboard</a>
-      <a href="projetos.html" class="nav-item" data-page="projetos"><div class="nav-icon">◈</div>Projetos<span class="nav-badge">12</span></a>
+      <a href="projetos.html" class="nav-item" data-page="projetos"><div class="nav-icon">◈</div>Projetos<span class="nav-badge" id="badge-projetos"></span></a>
       <a href="clientes.html" class="nav-item" data-page="clientes"><div class="nav-icon">◉</div>Clientes</a>
       <a href="financeiro.html" class="nav-item" data-page="financeiro"><div class="nav-icon">◎</div>Financeiro</a>
       <a href="colaboradores.html" class="nav-item" data-page="colaboradores"><div class="nav-icon">◍</div>Colaboradores</a>
       <span class="nav-section-label">Operações</span>
-      <a href="tarefas.html" class="nav-item" data-page="tarefas"><div class="nav-icon">✦</div>Tarefas<span class="nav-badge">7</span></a>
+      <a href="tarefas.html" class="nav-item" data-page="tarefas"><div class="nav-icon">✦</div>Tarefas<span class="nav-badge" id="badge-tarefas"></span></a>
       <a href="relatorios.html" class="nav-item" data-page="relatorios"><div class="nav-icon">▣</div>Relatórios</a>
       <span class="nav-section-label">Sistema</span>
       <a href="configuracoes.html" class="nav-item" data-page="configuracoes"><div class="nav-icon">⚙</div>Configurações</a>
     </nav>
     <div class="sidebar-footer">
       <div class="user-card">
-        <div class="user-avatar">A<span class="user-online"></span></div>
+        <div class="user-avatar">U<span class="user-online"></span></div>
         <div class="user-info">
-          <div class="user-name">Admin Nexus</div>
+          <div class="user-name">Usuário</div>
           <div class="user-role">Administrador</div>
         </div>
         <span class="user-plan">PRO</span>
@@ -68,7 +67,7 @@
       <div class="topbar-actions">
         <div class="search-box">
           <span class="search-icon">⌕</span>
-          <input type="text" placeholder="Buscar tarefa...">
+          <input type="text" placeholder="Buscar tarefa..." id="search-tar">
         </div>
         <button class="btn btn-primary btn-sm" onclick="modalNovaTarefaForm()">+ Nova Tarefa</button>
       </div>
@@ -79,23 +78,23 @@
       <!-- KPIs rápidos -->
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <div style="padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--text3);border-radius:var(--r-md);display:flex;align-items:center;gap:10px">
-          <span style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--text2)" data-count="23">0</span>
+          <span style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--text2)" id="kpi-tar-total">0</span>
           <span style="font-size:11px;color:var(--text3)">Total</span>
         </div>
         <div style="padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--info);border-radius:var(--r-md);display:flex;align-items:center;gap:10px">
-          <span style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--info)" data-count="8">0</span>
+          <span style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--info)" id="kpi-tar-backlog">0</span>
           <span style="font-size:11px;color:var(--text3)">Backlog</span>
         </div>
         <div style="padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:var(--r-md);display:flex;align-items:center;gap:10px">
-          <span style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--accent2)" data-count="7">0</span>
+          <span style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--accent2)" id="kpi-tar-doing">0</span>
           <span style="font-size:11px;color:var(--text3)">Em Andamento</span>
         </div>
         <div style="padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--warning);border-radius:var(--r-md);display:flex;align-items:center;gap:10px">
-          <span style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--warning)" data-count="4">0</span>
+          <span style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--warning)" id="kpi-tar-review">0</span>
           <span style="font-size:11px;color:var(--text3)">Em Revisão</span>
         </div>
         <div style="padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--success);border-radius:var(--r-md);display:flex;align-items:center;gap:10px">
-          <span style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--success)" data-count="4">0</span>
+          <span style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--success)" id="kpi-tar-done">0</span>
           <span style="font-size:11px;color:var(--text3)">Concluídas</span>
         </div>
       </div>
@@ -107,158 +106,36 @@
         <div class="kanban-col">
           <div class="kanban-head">
             <span class="kanban-head-title" style="color:var(--text3)">Backlog</span>
-            <span class="badge badge-info">8</span>
+            <span class="badge badge-info" id="col-badge-backlog">0</span>
           </div>
-          <div class="kanban-body">
-            <div class="task-card">
-              <div class="task-title">Configurar CI/CD pipeline para produção</div>
-              <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
-                <span class="badge badge-info">Infra</span>
-                <span class="badge badge-warning">Alta</span>
-              </div>
-              <div class="task-meta">
-                <span class="task-project">E-commerce Global</span>
-                <div class="avatar-sm" style="width:20px;height:20px;font-size:8px">B</div>
-              </div>
-            </div>
-            <div class="task-card">
-              <div class="task-title">Documentar API de integração de pagamentos</div>
-              <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
-                <span class="badge badge-metal">Docs</span>
-                <span class="badge badge-success">Normal</span>
-              </div>
-              <div class="task-meta">
-                <span class="task-project">Projeto Alpha</span>
-                <div class="avatar-sm green" style="width:20px;height:20px;font-size:8px">A</div>
-              </div>
-            </div>
-            <div class="task-card">
-              <div class="task-title">Testes de carga no módulo de relatórios</div>
-              <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
-                <span class="badge badge-metal">QA</span>
-                <span class="badge badge-success">Normal</span>
-              </div>
-              <div class="task-meta">
-                <span class="task-project">BI Dashboard</span>
-                <div class="avatar-sm" style="width:20px;height:20px;font-size:8px;background:linear-gradient(135deg,#0e7490,#06b6d4)">R</div>
-              </div>
-            </div>
-          </div>
+          <div class="kanban-body" id="col-backlog"></div>
         </div>
 
         <!-- Em Andamento -->
         <div class="kanban-col" style="border-top:2px solid var(--accent)">
           <div class="kanban-head" style="background:linear-gradient(135deg,rgba(74,144,217,0.08),transparent)">
             <span class="kanban-head-title" style="color:var(--accent2)">Em Andamento</span>
-            <span class="badge badge-metal">7</span>
+            <span class="badge badge-metal" id="col-badge-doing">0</span>
           </div>
-          <div class="kanban-body">
-            <div class="task-card" style="border-color:var(--border2)">
-              <div class="task-title">Implementar autenticação JWT + refresh token</div>
-              <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
-                <span class="badge badge-metal">Backend</span>
-                <span class="badge badge-danger">Urgente</span>
-              </div>
-              <div class="task-meta">
-                <span class="task-project">Projeto Alpha</span>
-                <div class="avatar-sm" style="width:20px;height:20px;font-size:8px">M</div>
-              </div>
-            </div>
-            <div class="task-card" style="border-color:var(--border2)">
-              <div class="task-title">Design do dashboard mobile — telas principais</div>
-              <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
-                <span class="badge badge-metal">Design</span>
-                <span class="badge badge-warning">Alta</span>
-              </div>
-              <div class="task-meta">
-                <span class="task-project">App Nexus Mobile</span>
-                <div class="avatar-sm green" style="width:20px;height:20px;font-size:8px">A</div>
-              </div>
-            </div>
-            <div class="task-card" style="border-color:var(--border2)">
-              <div class="task-title">Integração com API de NF-e</div>
-              <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
-                <span class="badge badge-metal">Backend</span>
-                <span class="badge badge-warning">Alta</span>
-              </div>
-              <div class="task-meta">
-                <span class="task-project">Sistema Inova</span>
-                <div class="avatar-sm purple" style="width:20px;height:20px;font-size:8px">P</div>
-              </div>
-            </div>
-          </div>
+          <div class="kanban-body" id="col-doing"></div>
         </div>
 
         <!-- Em Revisão -->
         <div class="kanban-col" style="border-top:2px solid var(--warning)">
           <div class="kanban-head" style="background:linear-gradient(135deg,rgba(245,158,11,0.06),transparent)">
             <span class="kanban-head-title" style="color:var(--warning)">Em Revisão</span>
-            <span class="badge badge-warning">4</span>
+            <span class="badge badge-warning" id="col-badge-review">0</span>
           </div>
-          <div class="kanban-body">
-            <div class="task-card">
-              <div class="task-title">Revisão de código — módulo de relatórios</div>
-              <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
-                <span class="badge badge-metal">Review</span>
-                <span class="badge badge-success">Normal</span>
-              </div>
-              <div class="task-meta">
-                <span class="task-project">BI Dashboard</span>
-                <div class="avatar-sm orange" style="width:20px;height:20px;font-size:8px">C</div>
-              </div>
-            </div>
-            <div class="task-card">
-              <div class="task-title">Testes E2E — fluxo de checkout completo</div>
-              <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
-                <span class="badge badge-metal">QA</span>
-                <span class="badge badge-warning">Alta</span>
-              </div>
-              <div class="task-meta">
-                <span class="task-project">E-commerce Global</span>
-                <div class="avatar-sm" style="width:20px;height:20px;font-size:8px;background:linear-gradient(135deg,#0e7490,#06b6d4)">R</div>
-              </div>
-            </div>
-          </div>
+          <div class="kanban-body" id="col-review"></div>
         </div>
 
         <!-- Concluído -->
         <div class="kanban-col" style="border-top:2px solid var(--success)">
           <div class="kanban-head" style="background:linear-gradient(135deg,rgba(34,197,94,0.06),transparent)">
             <span class="kanban-head-title" style="color:var(--success)">Concluído</span>
-            <span class="badge badge-success">4</span>
+            <span class="badge badge-success" id="col-badge-done">0</span>
           </div>
-          <div class="kanban-body">
-            <div class="task-card" style="opacity:0.7">
-              <div class="task-title" style="text-decoration:line-through;color:var(--text2)">Setup do ambiente de desenvolvimento</div>
-              <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
-                <span class="badge badge-metal">Infra</span>
-              </div>
-              <div class="task-meta">
-                <span class="task-project">Projeto Alpha</span>
-                <span style="font-family:var(--font-mono);font-size:9px;color:var(--success)">✓ 27/Abr</span>
-              </div>
-            </div>
-            <div class="task-card" style="opacity:0.7">
-              <div class="task-title" style="text-decoration:line-through;color:var(--text2)">Protótipo de alta fidelidade — tela de login</div>
-              <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
-                <span class="badge badge-metal">Design</span>
-              </div>
-              <div class="task-meta">
-                <span class="task-project">App Nexus Mobile</span>
-                <span style="font-family:var(--font-mono);font-size:9px;color:var(--success)">✓ 26/Abr</span>
-              </div>
-            </div>
-            <div class="task-card" style="opacity:0.7">
-              <div class="task-title" style="text-decoration:line-through;color:var(--text2)">Levantamento de requisitos — cliente Inova</div>
-              <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
-                <span class="badge badge-metal">PM</span>
-              </div>
-              <div class="task-meta">
-                <span class="task-project">Sistema Inova</span>
-                <span style="font-family:var(--font-mono);font-size:9px;color:var(--success)">✓ 24/Abr</span>
-              </div>
-            </div>
-          </div>
+          <div class="kanban-body" id="col-done"></div>
         </div>
 
       </div>
@@ -270,5 +147,109 @@
   <script src="assets/js/config.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
+  <script>
+    function moverTarefa(id, novoStatus) {
+      const list = getData('tarefas').map(t => t.id === id ? { ...t, status: novoStatus } : t);
+      saveData('tarefas', list);
+      renderTarefas();
+      showToast('Tarefa movida!', 'success');
+    }
+
+    function removerTarefa(id) {
+      removeItem('tarefas', id);
+      renderTarefas();
+      showToast('Tarefa removida', 'success');
+    }
+
+    function renderTarefas() {
+      const tarefas = getData('tarefas');
+
+      const grupos = { backlog: [], doing: [], review: [], done: [] };
+      tarefas.forEach(t => {
+        const s = t.status || 'backlog';
+        if (grupos[s]) grupos[s].push(t);
+        else grupos.backlog.push(t);
+      });
+
+      document.getElementById('kpi-tar-total').textContent  = tarefas.length;
+      document.getElementById('kpi-tar-backlog').textContent = grupos.backlog.length;
+      document.getElementById('kpi-tar-doing').textContent  = grupos.doing.length;
+      document.getElementById('kpi-tar-review').textContent = grupos.review.length;
+      document.getElementById('kpi-tar-done').textContent   = grupos.done.length;
+
+      document.getElementById('col-badge-backlog').textContent = grupos.backlog.length;
+      document.getElementById('col-badge-doing').textContent   = grupos.doing.length;
+      document.getElementById('col-badge-review').textContent  = grupos.review.length;
+      document.getElementById('col-badge-done').textContent    = grupos.done.length;
+
+      const pendentes = tarefas.filter(t => t.status !== 'done').length;
+      const tBadge = document.getElementById('badge-tarefas');
+      if (tBadge) tBadge.textContent = pendentes || '';
+
+      const projAtivos = getData('projetos').filter(p => p.status !== 'Concluído').length;
+      const pBadge = document.getElementById('badge-projetos');
+      if (pBadge) pBadge.textContent = projAtivos || '';
+
+      const prioBadge = { 'Urgente': 'badge-danger', 'Alta': 'badge-warning', 'Normal': 'badge-success' };
+      const statusOpts = {
+        backlog: [['doing','→ Andamento'], ['review','→ Revisão']],
+        doing:   [['backlog','← Backlog'],  ['review','→ Revisão'], ['done','✓ Concluir']],
+        review:  [['doing','← Andamento'], ['done','✓ Concluir']],
+        done:    [['review','← Revisão']],
+      };
+
+      const emptyHtml = `<div style="text-align:center;padding:30px 10px;color:var(--text3)">
+        <div style="font-size:22px;margin-bottom:6px;opacity:0.4">✦</div>
+        <div style="font-size:10px">Sem tarefas aqui</div>
+      </div>`;
+
+      function renderCol(colId, items, status) {
+        const el = document.getElementById(colId);
+        if (!items.length) { el.innerHTML = emptyHtml; return; }
+        el.innerHTML = items.map(t => {
+          const isDone = status === 'done';
+          const pBadge = prioBadge[t.prioridade] || 'badge-metal';
+          const opts   = (statusOpts[status] || []).map(([s, l]) =>
+            `<button class="btn btn-ghost btn-sm" style="font-size:9px;padding:3px 7px" onclick="moverTarefa(${t.id},'${s}')">${l}</button>`
+          ).join('');
+          return `
+            <div class="task-card" ${isDone ? 'style="opacity:0.7"' : ''}>
+              <div class="task-title" ${isDone ? 'style="text-decoration:line-through;color:var(--text2)"' : ''}>${t.titulo}</div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
+                ${t.categoria ? `<span class="badge badge-metal">${t.categoria}</span>` : ''}
+                ${t.prioridade ? `<span class="badge ${pBadge}">${t.prioridade}</span>` : ''}
+              </div>
+              <div class="task-meta">
+                <span class="task-project">${t.projeto || '—'}</span>
+                ${isDone
+                  ? `<span style="font-family:var(--font-mono);font-size:9px;color:var(--success)">✓ Concluída</span>`
+                  : `${t.responsavel ? `<div class="avatar-sm" style="width:20px;height:20px;font-size:8px">${t.responsavel.charAt(0).toUpperCase()}</div>` : ''}`
+                }
+              </div>
+              ${t.prazo && !isDone ? `<div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:4px">Prazo: ${formatDate(t.prazo)}</div>` : ''}
+              <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap">
+                ${opts}
+                <button class="btn btn-ghost btn-sm" style="font-size:9px;padding:3px 7px;color:var(--danger);border-color:rgba(239,68,68,0.2);margin-left:auto" onclick="removerTarefa(${t.id})">✕</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      renderCol('col-backlog', grupos.backlog, 'backlog');
+      renderCol('col-doing',   grupos.doing,   'doing');
+      renderCol('col-review',  grupos.review,  'review');
+      renderCol('col-done',    grupos.done,    'done');
+    }
+
+    document.getElementById('search-tar').addEventListener('input', function() {
+      const q = this.value.toLowerCase();
+      document.querySelectorAll('.task-card').forEach(card => {
+        card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+
+    renderTarefas();
+  </script>
 </body>
 </html>

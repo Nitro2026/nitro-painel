@@ -1,9 +1,9 @@
 // ==========================================
-// NEXUS — Camada de Autenticação
+// Camada de Autenticação
 // Supabase (se configurado) ou demo local
 // ==========================================
 
-const AUTH_SESSION_KEY = 'nexus_session';
+const AUTH_SESSION_KEY = 'sys_session';
 
 function getAuthUser() {
   try {

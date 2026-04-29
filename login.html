@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXUS — Acesso</title>
+  <title>Acesso ao Sistema</title>
   <link rel="stylesheet" href="assets/css/main.css">
   <script src="assets/js/data.js"></script>
   <style>
@@ -266,7 +266,7 @@
         const { data: { session } } = await window._supabase.auth.getSession();
         if (session) { window.location.replace('index.html'); return; }
       } else {
-        const s = sessionStorage.getItem('nexus_session') || localStorage.getItem('nexus_session');
+        const s = sessionStorage.getItem('sys_session') || localStorage.getItem('sys_session');
         if (s) { window.location.replace('index.html'); return; }
       }
     })();
@@ -311,7 +311,7 @@
       // Modo demo — aceita qualquer credencial válida
       await new Promise(r => setTimeout(r, 700));
       const session = { email, nome: email.split('@')[0], cargo: 'Administrador' };
-      (lembrar ? localStorage : sessionStorage).setItem('nexus_session', JSON.stringify(session));
+      (lembrar ? localStorage : sessionStorage).setItem('sys_session', JSON.stringify(session));
       window.location.replace('index.html');
     }
 

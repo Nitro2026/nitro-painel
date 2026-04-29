@@ -3,16 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXUS — Projetos</title>
+  <title>Projetos</title>
   <link rel="stylesheet" href="assets/css/main.css">
   <script src="assets/js/data.js"></script>
 </head>
 <body data-page="projetos">
 
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-logo">
-      
       <div class="logo-text">
         <span class="logo-name" data-bind="empresa">NITRO AGENCIA DIGITAL</span>
         <span class="logo-sub">Gestão Empresarial</span>
@@ -21,21 +19,21 @@
     <nav class="sidebar-nav">
       <span class="nav-section-label">Principal</span>
       <a href="index.html" class="nav-item" data-page="dashboard"><div class="nav-icon">⬡</div>Dashboard</a>
-      <a href="projetos.html" class="nav-item" data-page="projetos"><div class="nav-icon">◈</div>Projetos<span class="nav-badge">12</span></a>
+      <a href="projetos.html" class="nav-item" data-page="projetos"><div class="nav-icon">◈</div>Projetos<span class="nav-badge" id="badge-projetos"></span></a>
       <a href="clientes.html" class="nav-item" data-page="clientes"><div class="nav-icon">◉</div>Clientes</a>
       <a href="financeiro.html" class="nav-item" data-page="financeiro"><div class="nav-icon">◎</div>Financeiro</a>
       <a href="colaboradores.html" class="nav-item" data-page="colaboradores"><div class="nav-icon">◍</div>Colaboradores</a>
       <span class="nav-section-label">Operações</span>
-      <a href="tarefas.html" class="nav-item" data-page="tarefas"><div class="nav-icon">✦</div>Tarefas<span class="nav-badge">7</span></a>
+      <a href="tarefas.html" class="nav-item" data-page="tarefas"><div class="nav-icon">✦</div>Tarefas<span class="nav-badge" id="badge-tarefas"></span></a>
       <a href="relatorios.html" class="nav-item" data-page="relatorios"><div class="nav-icon">▣</div>Relatórios</a>
       <span class="nav-section-label">Sistema</span>
       <a href="configuracoes.html" class="nav-item" data-page="configuracoes"><div class="nav-icon">⚙</div>Configurações</a>
     </nav>
     <div class="sidebar-footer">
       <div class="user-card">
-        <div class="user-avatar">A<span class="user-online"></span></div>
+        <div class="user-avatar">U<span class="user-online"></span></div>
         <div class="user-info">
-          <div class="user-name">Admin Nexus</div>
+          <div class="user-name">Usuário</div>
           <div class="user-role">Administrador</div>
         </div>
         <span class="user-plan">PRO</span>
@@ -50,7 +48,7 @@
       <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu"><span></span><span></span><span></span></button>
       <div class="topbar-title">
         <div class="topbar-page">Projetos</div>
-        <div class="topbar-breadcrumb">Gerenciamento de projetos · 12 ativos</div>
+        <div class="topbar-breadcrumb" id="proj-breadcrumb">Gerenciamento de projetos</div>
       </div>
       <div class="topbar-actions">
         <div class="search-box">
@@ -69,26 +67,26 @@
         <div class="kpi-card info shine-corner">
           <div class="kpi-icon blue">◈</div>
           <div class="kpi-label">Em Andamento</div>
-          <div class="kpi-value accent" data-count="8">0</div>
-          <div class="kpi-sub"><span class="kpi-trend up">↑ 2</span> este mês</div>
+          <div class="kpi-value accent" id="kpi-andamento">0</div>
+          <div class="kpi-sub">projetos ativos</div>
         </div>
         <div class="kpi-card success shine-corner">
           <div class="kpi-icon green">✓</div>
           <div class="kpi-label">Concluídos</div>
-          <div class="kpi-value success" data-count="34">0</div>
-          <div class="kpi-sub"><span class="kpi-trend up">↑ 5</span> vs trimestre</div>
+          <div class="kpi-value success" id="kpi-concluidos">0</div>
+          <div class="kpi-sub">projetos entregues</div>
         </div>
         <div class="kpi-card warning shine-corner">
           <div class="kpi-icon yellow">⏱</div>
           <div class="kpi-label">Atrasados</div>
-          <div class="kpi-value warning" data-count="2">0</div>
-          <div class="kpi-sub"><span class="kpi-trend down">↓ 1</span> vs mês anterior</div>
+          <div class="kpi-value warning" id="kpi-atrasados">0</div>
+          <div class="kpi-sub">precisam de atenção</div>
         </div>
         <div class="kpi-card shine-corner">
           <div class="kpi-icon blue">💰</div>
           <div class="kpi-label">Valor Total</div>
-          <div class="kpi-value accent" data-count="342000" data-prefix="R$ ">R$ 0</div>
-          <div class="kpi-sub"><span class="kpi-trend up">↑ 18%</span> vs ano passado</div>
+          <div class="kpi-value accent" id="kpi-valor-total">R$ 0,00</div>
+          <div class="kpi-sub">soma de todos os projetos</div>
         </div>
       </div>
 
@@ -102,186 +100,7 @@
       </div>
 
       <!-- Grid de projetos -->
-      <div class="g3" id="projects-grid">
-
-        <div class="project-card shine-corner" data-status="andamento" style="animation-delay:0.05s">
-          <div class="project-header">
-            <div>
-              <div class="project-name">Projeto Alpha</div>
-              <div class="project-client">Tech Corp · R$ 45.000</div>
-            </div>
-            <span class="badge badge-warning">Em Andamento</span>
-          </div>
-          <p style="font-size:11px;color:var(--text3);margin-bottom:10px;line-height:1.5">Desenvolvimento do sistema de gestão integrado para o cliente Tech Corp.</p>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Progresso geral</span><span>78%</span></div>
-            <div class="progress-bar"><div class="progress-fill" data-w="78" style="width:0%"></div></div>
-          </div>
-          <div class="project-meta">
-            <div class="avatar-group">
-              <div class="avatar-sm" data-tip="Marcos S.">M</div>
-              <div class="avatar-sm green" data-tip="Ana L.">A</div>
-              <div class="avatar-sm purple" data-tip="Pedro A.">P</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Prazo</div>
-              <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--warning)">05/Mai/2026</div>
-            </div>
-          </div>
-          <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:6px">
-            <button class="btn btn-ghost btn-sm" style="flex:1" onclick="modalProjeto({nome:this.closest('.project-card').querySelector('.project-name').textContent,cliente:this.closest('.project-card').querySelector('.project-client').textContent,valor:'Ver detalhes',status:'Em Andamento',prazo:'-',progress:50,descricao:'Clique em Abrir para ver o projeto completo.',equipe:[]})">Detalhes</button>
-            <button class="btn btn-primary btn-sm" style="flex:1">Abrir</button>
-          </div>
-        </div>
-
-        <div class="project-card shine-corner" data-status="revisao" style="animation-delay:0.10s">
-          <div class="project-header">
-            <div>
-              <div class="project-name">Sistema Inova</div>
-              <div class="project-client">Inova LTDA · R$ 28.000</div>
-            </div>
-            <span class="badge badge-info">Em Revisão</span>
-          </div>
-          <p style="font-size:11px;color:var(--text3);margin-bottom:10px;line-height:1.5">Plataforma de automação de processos internos para a Inova LTDA.</p>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Progresso geral</span><span>92%</span></div>
-            <div class="progress-bar"><div class="progress-fill success" data-w="92" style="width:0%"></div></div>
-          </div>
-          <div class="project-meta">
-            <div class="avatar-group">
-              <div class="avatar-sm orange" data-tip="Carla M.">C</div>
-              <div class="avatar-sm" data-tip="Marcos S.">M</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Prazo</div>
-              <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--success)">30/Abr/2026</div>
-            </div>
-          </div>
-          <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:6px">
-            <button class="btn btn-ghost btn-sm" style="flex:1" onclick="modalProjeto({nome:this.closest('.project-card').querySelector('.project-name').textContent,cliente:this.closest('.project-card').querySelector('.project-client').textContent,valor:'Ver detalhes',status:'Em Andamento',prazo:'-',progress:50,descricao:'Clique em Abrir para ver o projeto completo.',equipe:[]})">Detalhes</button>
-            <button class="btn btn-primary btn-sm" style="flex:1">Abrir</button>
-          </div>
-        </div>
-
-        <div class="project-card shine-corner" data-status="atrasado" style="animation-delay:0.15s">
-          <div class="project-header">
-            <div>
-              <div class="project-name">App Nexus Mobile</div>
-              <div class="project-client">Interno · R$ 0</div>
-            </div>
-            <span class="badge badge-danger">Atrasado</span>
-          </div>
-          <p style="font-size:11px;color:var(--text3);margin-bottom:10px;line-height:1.5">Aplicativo mobile para acesso ao sistema de gestão Nexus.</p>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Progresso geral</span><span>45%</span></div>
-            <div class="progress-bar"><div class="progress-fill danger" data-w="45" style="width:0%"></div></div>
-          </div>
-          <div class="project-meta">
-            <div class="avatar-group">
-              <div class="avatar-sm purple" data-tip="Pedro A.">P</div>
-              <div class="avatar-sm red" data-tip="Lucas T.">L</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Prazo</div>
-              <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--danger)">⚠ 15/Abr</div>
-            </div>
-          </div>
-          <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:6px">
-            <button class="btn btn-ghost btn-sm" style="flex:1" onclick="modalProjeto({nome:this.closest('.project-card').querySelector('.project-name').textContent,cliente:this.closest('.project-card').querySelector('.project-client').textContent,valor:'Ver detalhes',status:'Em Andamento',prazo:'-',progress:50,descricao:'Clique em Abrir para ver o projeto completo.',equipe:[]})">Detalhes</button>
-            <button class="btn btn-primary btn-sm" style="flex:1">Abrir</button>
-          </div>
-        </div>
-
-        <div class="project-card shine-corner" data-status="andamento" style="animation-delay:0.20s">
-          <div class="project-header">
-            <div>
-              <div class="project-name">E-commerce Global</div>
-              <div class="project-client">Global Soluções · R$ 67.000</div>
-            </div>
-            <span class="badge badge-warning">Em Andamento</span>
-          </div>
-          <p style="font-size:11px;color:var(--text3);margin-bottom:10px;line-height:1.5">Plataforma de comércio eletrônico com integração de pagamentos e estoque.</p>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Progresso geral</span><span>55%</span></div>
-            <div class="progress-bar"><div class="progress-fill" data-w="55" style="width:0%"></div></div>
-          </div>
-          <div class="project-meta">
-            <div class="avatar-group">
-              <div class="avatar-sm orange" data-tip="Carla M.">C</div>
-              <div class="avatar-sm green" data-tip="Ana L.">A</div>
-              <div class="avatar-sm" data-tip="Marcos S.">M</div>
-              <div class="avatar-sm purple" data-tip="Pedro A.">P</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Prazo</div>
-              <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--warning)">20/Jun/2026</div>
-            </div>
-          </div>
-          <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:6px">
-            <button class="btn btn-ghost btn-sm" style="flex:1" onclick="modalProjeto({nome:this.closest('.project-card').querySelector('.project-name').textContent,cliente:this.closest('.project-card').querySelector('.project-client').textContent,valor:'Ver detalhes',status:'Em Andamento',prazo:'-',progress:50,descricao:'Clique em Abrir para ver o projeto completo.',equipe:[]})">Detalhes</button>
-            <button class="btn btn-primary btn-sm" style="flex:1">Abrir</button>
-          </div>
-        </div>
-
-        <div class="project-card shine-corner" data-status="concluido" style="animation-delay:0.25s">
-          <div class="project-header">
-            <div>
-              <div class="project-name">Portal RH StartUp</div>
-              <div class="project-client">StartUp XYZ · R$ 18.500</div>
-            </div>
-            <span class="badge badge-success">Concluído</span>
-          </div>
-          <p style="font-size:11px;color:var(--text3);margin-bottom:10px;line-height:1.5">Portal de gestão de recursos humanos com módulo de ponto eletrônico.</p>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Progresso geral</span><span>100%</span></div>
-            <div class="progress-bar"><div class="progress-fill success" data-w="100" style="width:0%"></div></div>
-          </div>
-          <div class="project-meta">
-            <div class="avatar-group">
-              <div class="avatar-sm green" data-tip="Ana L.">A</div>
-              <div class="avatar-sm" data-tip="Marcos S.">M</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Entregue</div>
-              <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--success)">✓ 10/Abr/2026</div>
-            </div>
-          </div>
-          <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:6px">
-            <button class="btn btn-ghost btn-sm" style="flex:1">Relatório</button>
-            <button class="btn btn-ghost btn-sm" style="flex:1">Arquivado</button>
-          </div>
-        </div>
-
-        <div class="project-card shine-corner" data-status="andamento" style="animation-delay:0.30s">
-          <div class="project-header">
-            <div>
-              <div class="project-name">BI Dashboard Corp</div>
-              <div class="project-client">Tech Corp · R$ 52.000</div>
-            </div>
-            <span class="badge badge-warning">Em Andamento</span>
-          </div>
-          <p style="font-size:11px;color:var(--text3);margin-bottom:10px;line-height:1.5">Dashboard analítico com integração de dados em tempo real e relatórios.</p>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Progresso geral</span><span>30%</span></div>
-            <div class="progress-bar"><div class="progress-fill" data-w="30" style="width:0%"></div></div>
-          </div>
-          <div class="project-meta">
-            <div class="avatar-group">
-              <div class="avatar-sm purple" data-tip="Pedro A.">P</div>
-              <div class="avatar-sm orange" data-tip="Carla M.">C</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Prazo</div>
-              <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--accent2)">15/Jul/2026</div>
-            </div>
-          </div>
-          <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:6px">
-            <button class="btn btn-ghost btn-sm" style="flex:1" onclick="modalProjeto({nome:this.closest('.project-card').querySelector('.project-name').textContent,cliente:this.closest('.project-card').querySelector('.project-client').textContent,valor:'Ver detalhes',status:'Em Andamento',prazo:'-',progress:50,descricao:'Clique em Abrir para ver o projeto completo.',equipe:[]})">Detalhes</button>
-            <button class="btn btn-primary btn-sm" style="flex:1">Abrir</button>
-          </div>
-        </div>
-
-      </div>
+      <div class="g3" id="projects-grid"></div>
 
     </main>
   </div>
@@ -291,32 +110,121 @@
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
   <script>
-    function filterProjects(status, btn) {
-      document.querySelectorAll('[onclick^="filterProjects"]').forEach(b => {
-        b.classList.remove('btn-primary');
-        b.classList.add('btn-ghost');
-      });
-      btn.classList.remove('btn-ghost');
-      btn.classList.add('btn-primary');
+    let _projetosCache = [];
 
+    function openProjetoModal(idx) {
+      modalProjeto(_projetosCache[idx]);
+    }
+
+    function removerProjeto(id) {
+      removeItem('projetos', id);
+      renderProjetos();
+      showToast('Projeto removido', 'success');
+    }
+
+    function renderProjetos() {
+      const projetos = getData('projetos');
+      _projetosCache = projetos;
+      const grid = document.getElementById('projects-grid');
+
+      const andamento = projetos.filter(p => p.status === 'Em Andamento').length;
+      const revisao   = projetos.filter(p => p.status === 'Em Revisão').length;
+      const concluidos = projetos.filter(p => p.status === 'Concluído').length;
+      const atrasados  = projetos.filter(p => p.status === 'Atrasado').length;
+      const valorTotal = projetos.reduce((s, p) => s + (parseFloat(p.valor) || 0), 0);
+      const ativos = andamento + revisao + atrasados;
+
+      document.getElementById('kpi-andamento').textContent  = andamento + revisao;
+      document.getElementById('kpi-concluidos').textContent = concluidos;
+      document.getElementById('kpi-atrasados').textContent  = atrasados;
+      document.getElementById('kpi-valor-total').textContent = 'R$ ' + formatMoney(valorTotal);
+      document.getElementById('proj-breadcrumb').textContent = `Gerenciamento de projetos · ${ativos} ativo${ativos !== 1 ? 's' : ''}`;
+
+      const badgeEl = document.getElementById('badge-projetos');
+      if (badgeEl) badgeEl.textContent = ativos || '';
+
+      const tarefas = getData('tarefas');
+      const pendentes = tarefas.filter(t => t.status !== 'done').length;
+      const tBadge = document.getElementById('badge-tarefas');
+      if (tBadge) tBadge.textContent = pendentes || '';
+
+      if (!projetos.length) {
+        grid.innerHTML = `<div style="text-align:center;grid-column:1/-1;padding:60px 20px">
+          <div style="font-size:40px;margin-bottom:12px;opacity:0.4">◈</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text2)">Nenhum projeto cadastrado</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:6px">Clique em "+ Novo Projeto" para começar</div>
+        </div>`;
+        return;
+      }
+
+      grid.innerHTML = projetos.map((p, i) => {
+        const sk = statusKey(p.status);
+        const sb = statusBadge(p.status);
+        const pf = progressFill(p.progress || 0);
+        const delay = (i * 0.05).toFixed(2);
+        return `
+          <div class="project-card shine-corner" data-status="${sk}" style="animation-delay:${delay}s">
+            <div class="project-header">
+              <div>
+                <div class="project-name">${p.nome}</div>
+                <div class="project-client">${p.cliente || '—'} · R$ ${formatMoney(p.valor || 0)}</div>
+              </div>
+              <span class="badge ${sb}">${p.status}</span>
+            </div>
+            ${p.descricao ? `<p style="font-size:11px;color:var(--text3);margin-bottom:10px;line-height:1.5">${p.descricao}</p>` : ''}
+            <div class="progress-wrap">
+              <div class="progress-label"><span>Progresso</span><span>${p.progress || 0}%</span></div>
+              <div class="progress-bar"><div class="progress-fill ${pf}" style="width:${p.progress || 0}%"></div></div>
+            </div>
+            <div class="project-meta">
+              <div class="avatar-group">
+                ${p.responsavel ? `<div class="avatar-sm" data-tip="${p.responsavel}">${p.responsavel.charAt(0).toUpperCase()}</div>` : '<span style="font-size:11px;color:var(--text3)">Sem responsável</span>'}
+              </div>
+              <div style="text-align:right">
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">Prazo</div>
+                <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--accent2)">${formatDate(p.prazo)}</div>
+              </div>
+            </div>
+            <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:6px">
+              <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openProjetoModal(${i})">Detalhes</button>
+              <button class="btn btn-ghost btn-sm" style="flex:1;border-color:rgba(239,68,68,0.3);color:var(--danger)" onclick="removerProjeto(${p.id})">Remover</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Reaplica filtro ativo
+      const activeBtn = document.querySelector('[onclick^="filterProjects"].btn-primary');
+      if (activeBtn) {
+        const m = activeBtn.getAttribute('onclick').match(/filterProjects\('(\w+)'/);
+        if (m) applyFilter(m[1]);
+      }
+    }
+
+    function applyFilter(status) {
       document.querySelectorAll('.project-card').forEach(card => {
-        if (status === 'todos' || card.dataset.status === status) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
+        card.style.display = (status === 'todos' || card.dataset.status === status) ? '' : 'none';
       });
     }
 
-    // Search
+    function filterProjects(status, btn) {
+      document.querySelectorAll('[onclick^="filterProjects"]').forEach(b => {
+        b.classList.remove('btn-primary'); b.classList.add('btn-ghost');
+      });
+      btn.classList.remove('btn-ghost'); btn.classList.add('btn-primary');
+      applyFilter(status);
+    }
+
     document.getElementById('search-proj').addEventListener('input', function() {
       const q = this.value.toLowerCase();
       document.querySelectorAll('.project-card').forEach(card => {
-        const name = card.querySelector('.project-name').textContent.toLowerCase();
-        const client = card.querySelector('.project-client').textContent.toLowerCase();
+        const name   = card.querySelector('.project-name')?.textContent.toLowerCase() || '';
+        const client = card.querySelector('.project-client')?.textContent.toLowerCase() || '';
         card.style.display = (name.includes(q) || client.includes(q)) ? '' : 'none';
       });
     });
+
+    renderProjetos();
   </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXUS — Colaboradores</title>
+  <title>Colaboradores</title>
   <link rel="stylesheet" href="assets/css/main.css">
   <script src="assets/js/data.js"></script>
 </head>
@@ -11,7 +11,6 @@
 
   <aside class="sidebar">
     <div class="sidebar-logo">
-      
       <div class="logo-text">
         <span class="logo-name" data-bind="empresa">NITRO AGENCIA DIGITAL</span>
         <span class="logo-sub">Gestão Empresarial</span>
@@ -20,21 +19,21 @@
     <nav class="sidebar-nav">
       <span class="nav-section-label">Principal</span>
       <a href="index.html" class="nav-item" data-page="dashboard"><div class="nav-icon">⬡</div>Dashboard</a>
-      <a href="projetos.html" class="nav-item" data-page="projetos"><div class="nav-icon">◈</div>Projetos<span class="nav-badge">12</span></a>
+      <a href="projetos.html" class="nav-item" data-page="projetos"><div class="nav-icon">◈</div>Projetos<span class="nav-badge" id="badge-projetos"></span></a>
       <a href="clientes.html" class="nav-item" data-page="clientes"><div class="nav-icon">◉</div>Clientes</a>
       <a href="financeiro.html" class="nav-item" data-page="financeiro"><div class="nav-icon">◎</div>Financeiro</a>
       <a href="colaboradores.html" class="nav-item" data-page="colaboradores"><div class="nav-icon">◍</div>Colaboradores</a>
       <span class="nav-section-label">Operações</span>
-      <a href="tarefas.html" class="nav-item" data-page="tarefas"><div class="nav-icon">✦</div>Tarefas<span class="nav-badge">7</span></a>
+      <a href="tarefas.html" class="nav-item" data-page="tarefas"><div class="nav-icon">✦</div>Tarefas<span class="nav-badge" id="badge-tarefas"></span></a>
       <a href="relatorios.html" class="nav-item" data-page="relatorios"><div class="nav-icon">▣</div>Relatórios</a>
       <span class="nav-section-label">Sistema</span>
       <a href="configuracoes.html" class="nav-item" data-page="configuracoes"><div class="nav-icon">⚙</div>Configurações</a>
     </nav>
     <div class="sidebar-footer">
       <div class="user-card">
-        <div class="user-avatar">A<span class="user-online"></span></div>
+        <div class="user-avatar">U<span class="user-online"></span></div>
         <div class="user-info">
-          <div class="user-name">Admin Nexus</div>
+          <div class="user-name">Usuário</div>
           <div class="user-role">Administrador</div>
         </div>
         <span class="user-plan">PRO</span>
@@ -49,12 +48,12 @@
       <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu"><span></span><span></span><span></span></button>
       <div class="topbar-title">
         <div class="topbar-page">Colaboradores</div>
-        <div class="topbar-breadcrumb">Gestão de equipe · 8 membros ativos</div>
+        <div class="topbar-breadcrumb" id="col-breadcrumb">Gestão de equipe</div>
       </div>
       <div class="topbar-actions">
         <div class="search-box">
           <span class="search-icon">⌕</span>
-          <input type="text" placeholder="Buscar colaborador...">
+          <input type="text" placeholder="Buscar colaborador..." id="search-col">
         </div>
         <button class="btn btn-primary btn-sm" onclick="modalNovoColaboradorForm()">+ Novo Colaborador</button>
       </div>
@@ -67,166 +66,36 @@
         <div class="kpi-card success shine-corner">
           <div class="kpi-icon green">◍</div>
           <div class="kpi-label">Total Equipe</div>
-          <div class="kpi-value success" data-count="8">0</div>
-          <div class="kpi-sub"><span class="kpi-trend up">↑ 2</span> este trimestre</div>
+          <div class="kpi-value success" id="kpi-total-col">0</div>
+          <div class="kpi-sub">colaboradores ativos</div>
+        </div>
+        <div class="kpi-card danger shine-corner">
+          <div class="kpi-icon red">⚠</div>
+          <div class="kpi-label">Carga Crítica</div>
+          <div class="kpi-value danger" id="kpi-criticos">0</div>
+          <div class="kpi-sub">acima de 90%</div>
         </div>
         <div class="kpi-card warning shine-corner">
-          <div class="kpi-icon yellow">⚠</div>
-          <div class="kpi-label">Carga Crítica</div>
-          <div class="kpi-value warning" data-count="2">0</div>
-          <div class="kpi-sub">acima de 90% de carga</div>
+          <div class="kpi-icon yellow">◈</div>
+          <div class="kpi-label">Alta Carga</div>
+          <div class="kpi-value warning" id="kpi-alta-carga">0</div>
+          <div class="kpi-sub">entre 75% e 90%</div>
         </div>
         <div class="kpi-card info shine-corner">
-          <div class="kpi-icon blue">◈</div>
-          <div class="kpi-label">Projetos/Pessoa</div>
-          <div class="kpi-value accent" data-count="2" data-suffix=".5">0</div>
-          <div class="kpi-sub">média por colaborador</div>
-        </div>
-        <div class="kpi-card shine-corner">
           <div class="kpi-icon blue">★</div>
-          <div class="kpi-label">Satisfação</div>
-          <div class="kpi-value accent" data-count="94" data-suffix="%">0</div>
-          <div class="kpi-sub"><span class="kpi-trend up">↑ 3%</span> vs mês anterior</div>
+          <div class="kpi-label">Disponíveis</div>
+          <div class="kpi-value accent" id="kpi-disponiveis">0</div>
+          <div class="kpi-sub">abaixo de 50%</div>
         </div>
       </div>
 
       <!-- Cards dos colaboradores -->
       <div class="section-header">
         <span class="section-title">Equipe Ativa</span>
-        <span class="badge badge-metal">8 colaboradores</span>
+        <span class="badge badge-metal" id="col-count-badge">0 colaboradores</span>
       </div>
 
-      <div class="g4">
-
-        <div class="project-card shine-corner" style="animation-delay:0.05s;text-align:center">
-          <div style="width:56px;height:56px;border-radius:50%;background:var(--metal);background-size:200%;animation:shimmer 3s linear infinite;display:flex;align-items:center;justify-content:center;font-family:var(--font-disp);font-size:24px;color:#fff;margin:0 auto 12px;box-shadow:var(--shadow-accent)">M</div>
-          <div style="font-weight:700;font-size:14px;color:var(--text)">Marcos Silva</div>
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-bottom:8px">Dev Senior</div>
-          <span class="badge badge-warning" style="margin-bottom:12px">Alta Carga</span>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Carga</span><span>85%</span></div>
-            <div class="progress-bar"><div class="progress-fill warning" data-w="85" style="width:0%"></div></div>
-          </div>
-          <div style="margin-top:10px;font-family:var(--font-mono);font-size:10px;color:var(--text3)">3 projetos ativos</div>
-          <div style="margin-top:8px;display:flex;gap:6px;justify-content:center">
-            <span class="badge badge-metal">React</span>
-            <span class="badge badge-metal">Node</span>
-          </div>
-        </div>
-
-        <div class="project-card shine-corner" style="animation-delay:0.10s;text-align:center">
-          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-family:var(--font-disp);font-size:24px;color:#fff;margin:0 auto 12px;box-shadow:0 0 20px rgba(34,197,94,0.3)">A</div>
-          <div style="font-weight:700;font-size:14px;color:var(--text)">Ana Lima</div>
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-bottom:8px">Designer UX/UI</div>
-          <span class="badge badge-success" style="margin-bottom:12px">Normal</span>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Carga</span><span>60%</span></div>
-            <div class="progress-bar"><div class="progress-fill success" data-w="60" style="width:0%"></div></div>
-          </div>
-          <div style="margin-top:10px;font-family:var(--font-mono);font-size:10px;color:var(--text3)">2 projetos ativos</div>
-          <div style="margin-top:8px;display:flex;gap:6px;justify-content:center">
-            <span class="badge badge-metal">Figma</span>
-            <span class="badge badge-metal">CSS</span>
-          </div>
-        </div>
-
-        <div class="project-card shine-corner" style="animation-delay:0.15s;text-align:center">
-          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a855f7);display:flex;align-items:center;justify-content:center;font-family:var(--font-disp);font-size:24px;color:#fff;margin:0 auto 12px;box-shadow:0 0 20px rgba(168,85,247,0.3)">P</div>
-          <div style="font-weight:700;font-size:14px;color:var(--text)">Pedro Alves</div>
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-bottom:8px">Dev Fullstack</div>
-          <span class="badge badge-danger" style="margin-bottom:12px">Carga Crítica</span>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Carga</span><span style="color:var(--danger)">95%</span></div>
-            <div class="progress-bar"><div class="progress-fill danger" data-w="95" style="width:0%"></div></div>
-          </div>
-          <div style="margin-top:10px;font-family:var(--font-mono);font-size:10px;color:var(--text3)">2 projetos ativos</div>
-          <div style="margin-top:8px;display:flex;gap:6px;justify-content:center">
-            <span class="badge badge-metal">Python</span>
-            <span class="badge badge-metal">Vue</span>
-          </div>
-        </div>
-
-        <div class="project-card shine-corner" style="animation-delay:0.20s;text-align:center">
-          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#ea580c,#f97316);display:flex;align-items:center;justify-content:center;font-family:var(--font-disp);font-size:24px;color:#fff;margin:0 auto 12px;box-shadow:0 0 20px rgba(249,115,22,0.3)">C</div>
-          <div style="font-weight:700;font-size:14px;color:var(--text)">Carla Matos</div>
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-bottom:8px">Gerente de Projetos</div>
-          <span class="badge badge-success" style="margin-bottom:12px">Normal</span>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Carga</span><span>70%</span></div>
-            <div class="progress-bar"><div class="progress-fill" data-w="70" style="width:0%"></div></div>
-          </div>
-          <div style="margin-top:10px;font-family:var(--font-mono);font-size:10px;color:var(--text3)">4 projetos ativos</div>
-          <div style="margin-top:8px;display:flex;gap:6px;justify-content:center">
-            <span class="badge badge-metal">Scrum</span>
-            <span class="badge badge-metal">Jira</span>
-          </div>
-        </div>
-
-        <div class="project-card shine-corner" style="animation-delay:0.25s;text-align:center">
-          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#dc2626,#ef4444);display:flex;align-items:center;justify-content:center;font-family:var(--font-disp);font-size:24px;color:#fff;margin:0 auto 12px;box-shadow:0 0 20px rgba(239,68,68,0.3)">L</div>
-          <div style="font-weight:700;font-size:14px;color:var(--text)">Lucas Torres</div>
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-bottom:8px">Dev Mobile</div>
-          <span class="badge badge-warning" style="margin-bottom:12px">Alta Carga</span>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Carga</span><span>80%</span></div>
-            <div class="progress-bar"><div class="progress-fill warning" data-w="80" style="width:0%"></div></div>
-          </div>
-          <div style="margin-top:10px;font-family:var(--font-mono);font-size:10px;color:var(--text3)">1 projeto ativo</div>
-          <div style="margin-top:8px;display:flex;gap:6px;justify-content:center">
-            <span class="badge badge-metal">Flutter</span>
-            <span class="badge badge-metal">Swift</span>
-          </div>
-        </div>
-
-        <div class="project-card shine-corner" style="animation-delay:0.30s;text-align:center">
-          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0e7490,#06b6d4);display:flex;align-items:center;justify-content:center;font-family:var(--font-disp);font-size:24px;color:#fff;margin:0 auto 12px;box-shadow:0 0 20px rgba(6,182,212,0.3)">R</div>
-          <div style="font-weight:700;font-size:14px;color:var(--text)">Rafaela Cruz</div>
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-bottom:8px">QA Engineer</div>
-          <span class="badge badge-success" style="margin-bottom:12px">Disponível</span>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Carga</span><span>40%</span></div>
-            <div class="progress-bar"><div class="progress-fill success" data-w="40" style="width:0%"></div></div>
-          </div>
-          <div style="margin-top:10px;font-family:var(--font-mono);font-size:10px;color:var(--text3)">2 projetos ativos</div>
-          <div style="margin-top:8px;display:flex;gap:6px;justify-content:center">
-            <span class="badge badge-metal">Cypress</span>
-            <span class="badge badge-metal">Jest</span>
-          </div>
-        </div>
-
-        <div class="project-card shine-corner" style="animation-delay:0.35s;text-align:center">
-          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#3b82f6);display:flex;align-items:center;justify-content:center;font-family:var(--font-disp);font-size:24px;color:#fff;margin:0 auto 12px;box-shadow:0 0 20px rgba(59,130,246,0.3)">B</div>
-          <div style="font-weight:700;font-size:14px;color:var(--text)">Bruno Mendes</div>
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-bottom:8px">DevOps / Infra</div>
-          <span class="badge badge-success" style="margin-bottom:12px">Normal</span>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Carga</span><span>55%</span></div>
-            <div class="progress-bar"><div class="progress-fill success" data-w="55" style="width:0%"></div></div>
-          </div>
-          <div style="margin-top:10px;font-family:var(--font-mono);font-size:10px;color:var(--text3)">3 projetos ativos</div>
-          <div style="margin-top:8px;display:flex;gap:6px;justify-content:center">
-            <span class="badge badge-metal">Docker</span>
-            <span class="badge badge-metal">AWS</span>
-          </div>
-        </div>
-
-        <div class="project-card shine-corner" style="animation-delay:0.40s;text-align:center">
-          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#be185d,#ec4899);display:flex;align-items:center;justify-content:center;font-family:var(--font-disp);font-size:24px;color:#fff;margin:0 auto 12px;box-shadow:0 0 20px rgba(236,72,153,0.3)">J</div>
-          <div style="font-weight:700;font-size:14px;color:var(--text)">Juliana Reis</div>
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-bottom:8px">Data Analyst</div>
-          <span class="badge badge-success" style="margin-bottom:12px">Normal</span>
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Carga</span><span>65%</span></div>
-            <div class="progress-bar"><div class="progress-fill" data-w="65" style="width:0%"></div></div>
-          </div>
-          <div style="margin-top:10px;font-family:var(--font-mono);font-size:10px;color:var(--text3)">2 projetos ativos</div>
-          <div style="margin-top:8px;display:flex;gap:6px;justify-content:center">
-            <span class="badge badge-metal">SQL</span>
-            <span class="badge badge-metal">Python</span>
-          </div>
-        </div>
-
-      </div>
+      <div class="g4" id="colabs-grid"></div>
 
     </main>
   </div>
@@ -235,5 +104,88 @@
   <script src="assets/js/config.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
+  <script>
+    let _colabsCache = [];
+
+    function abrirColaborador(idx) { modalColaborador(_colabsCache[idx]); }
+
+    function renderColaboradores() {
+      const colabs = getData('colaboradores');
+      _colabsCache = colabs;
+      const grid = document.getElementById('colabs-grid');
+
+      const criticos   = colabs.filter(c => c.carga >= 90).length;
+      const altaCarga  = colabs.filter(c => c.carga >= 75 && c.carga < 90).length;
+      const disponiveis = colabs.filter(c => c.carga < 50).length;
+
+      document.getElementById('kpi-total-col').textContent  = colabs.length;
+      document.getElementById('kpi-criticos').textContent   = criticos;
+      document.getElementById('kpi-alta-carga').textContent = altaCarga;
+      document.getElementById('kpi-disponiveis').textContent = disponiveis;
+      document.getElementById('col-count-badge').textContent = `${colabs.length} colaborador${colabs.length !== 1 ? 'es' : ''}`;
+      document.getElementById('col-breadcrumb').textContent = `Gestão de equipe · ${colabs.length} membro${colabs.length !== 1 ? 's' : ''} ativo${colabs.length !== 1 ? 's' : ''}`;
+
+      const projAtivos = getData('projetos').filter(p => p.status !== 'Concluído').length;
+      const badgeEl = document.getElementById('badge-projetos');
+      if (badgeEl) badgeEl.textContent = projAtivos || '';
+
+      const pendentes = getData('tarefas').filter(t => t.status !== 'done').length;
+      const tBadge = document.getElementById('badge-tarefas');
+      if (tBadge) tBadge.textContent = pendentes || '';
+
+      if (!colabs.length) {
+        grid.innerHTML = `<div style="text-align:center;grid-column:1/-1;padding:60px 20px">
+          <div style="font-size:40px;margin-bottom:12px;opacity:0.4">◍</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text2)">Nenhum colaborador cadastrado</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:6px">Clique em "+ Novo Colaborador" para adicionar</div>
+        </div>`;
+        return;
+      }
+
+      const gradients = [
+        'var(--metal)',
+        'linear-gradient(135deg,#16a34a,#22c55e)',
+        'linear-gradient(135deg,#7c3aed,#a855f7)',
+        'linear-gradient(135deg,#ea580c,#f97316)',
+        'linear-gradient(135deg,#dc2626,#ef4444)',
+        'linear-gradient(135deg,#0e7490,#06b6d4)',
+        'linear-gradient(135deg,#1d4ed8,#3b82f6)',
+        'linear-gradient(135deg,#be185d,#ec4899)',
+      ];
+
+      grid.innerHTML = colabs.map((c, i) => {
+        const ci      = cargaInfo(c.carga);
+        const grad    = gradients[i % gradients.length];
+        const bgStyle = grad === 'var(--metal)' ? 'background:var(--metal);background-size:200%;animation:shimmer 3s linear infinite' : `background:${grad}`;
+        const skills  = c.skills || [];
+        const delay   = (i * 0.05).toFixed(2);
+        return `
+          <div class="project-card shine-corner" style="animation-delay:${delay}s;text-align:center" data-search="${c.nome.toLowerCase()} ${c.cargo.toLowerCase()}">
+            <div style="width:56px;height:56px;border-radius:50%;${bgStyle};display:flex;align-items:center;justify-content:center;font-family:var(--font-disp);font-size:24px;color:#fff;margin:0 auto 12px;box-shadow:var(--shadow-accent)">${c.nome.charAt(0).toUpperCase()}</div>
+            <div style="font-weight:700;font-size:14px;color:var(--text)">${c.nome}</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-bottom:8px">${c.cargo || '—'}</div>
+            <span class="badge ${ci.cls}" style="margin-bottom:12px">${ci.label}</span>
+            <div class="progress-wrap">
+              <div class="progress-label"><span>Carga</span><span style="${c.carga >= 90 ? 'color:var(--danger)' : ''}">${c.carga || 0}%</span></div>
+              <div class="progress-bar"><div class="progress-fill ${ci.fill}" style="width:${c.carga || 0}%"></div></div>
+            </div>
+            <div style="margin-top:10px;font-family:var(--font-mono);font-size:10px;color:var(--text3)">${c.projetos || 0} projeto${c.projetos !== 1 ? 's' : ''} ativo${c.projetos !== 1 ? 's' : ''}</div>
+            ${skills.length ? `<div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap;justify-content:center">${skills.slice(0,3).map(s => `<span class="badge badge-metal">${s}</span>`).join('')}</div>` : ''}
+            <button class="btn btn-ghost btn-sm" style="margin-top:12px;width:100%" onclick="abrirColaborador(${i})">Ver Perfil</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('search-col').addEventListener('input', function() {
+      const q = this.value.toLowerCase();
+      document.querySelectorAll('#colabs-grid .project-card').forEach(card => {
+        const s = card.dataset.search || '';
+        card.style.display = s.includes(q) ? '' : 'none';
+      });
+    });
+
+    renderColaboradores();
+  </script>
 </body>
 </html>
