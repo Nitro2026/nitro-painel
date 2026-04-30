@@ -187,8 +187,6 @@ function closeModal() {
 
 // ---- MODAL DETALHE: PROJETO ----
 function modalProjeto(dados) {
-  const sc = statusBadge(dados.status);
-  const pf = progressFill(dados.progress || 0);
   const equipe = dados.equipe || [];
 
   openModal(`
@@ -200,18 +198,6 @@ function modalProjeto(dados) {
       <button class="modal-close">✕</button>
     </div>
     <div class="modal-body">
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <span class="badge ${sc}">${dados.status}</span>
-        <span class="badge badge-metal">Prazo: ${formatDate(dados.prazo)}</span>
-      </div>
-      ${dados.descricao ? `<p style="font-size:13px;color:var(--text2);line-height:1.6">${dados.descricao}</p>` : ''}
-      <div>
-        <div class="detail-key" style="margin-bottom:8px">Progresso Geral</div>
-        <div class="progress-bar" style="height:6px">
-          <div class="progress-fill ${pf}" style="width:${dados.progress || 0}%"></div>
-        </div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);margin-top:4px">${dados.progress || 0}% concluído</div>
-      </div>
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-md);padding:14px">
         <div class="detail-row"><span class="detail-key">Cliente</span><span class="detail-val">${dados.cliente || '—'}</span></div>
         <div class="detail-row"><span class="detail-key">Valor</span><span class="detail-val" style="color:var(--success)">R$ ${formatMoney(dados.valor)}</span></div>
@@ -220,33 +206,46 @@ function modalProjeto(dados) {
         <div class="detail-row"><span class="detail-key">Responsável</span><span class="detail-val">${dados.responsavel || '—'}</span></div>
         ${equipe.length ? `<div class="detail-row"><span class="detail-key">Equipe</span><div style="display:flex;gap:4px">${equipe.map((m,i) => `<div class="avatar-sm ${m.cor||avatarColor(i)}" data-tip="${m.nome}">${m.inicial}</div>`).join('')}</div></div>` : ''}
       </div>
+      ${dados.descricao ? `<p style="font-size:13px;color:var(--text2);line-height:1.6">${dados.descricao}</p>` : ''}
       ${dados.id ? `
-      <div style="display:flex;gap:8px;align-items:center">
-        <label class="form-label" style="white-space:nowrap">Atualizar progresso:</label>
-        <input type="range" min="0" max="100" value="${dados.progress||0}" id="prog-slider" style="flex:1">
-        <span id="prog-val" style="font-family:var(--font-mono);font-size:12px;width:36px">${dados.progress||0}%</span>
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-md);padding:14px">
+        <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:12px">✎ Editar Projeto</div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-input" id="edit-proj-status">
+            <option ${dados.status==='Em Andamento'?'selected':''}>Em Andamento</option>
+            <option ${dados.status==='Em Revisão'?'selected':''}>Em Revisão</option>
+            <option ${dados.status==='Atrasado'?'selected':''}>Atrasado</option>
+            <option ${dados.status==='Concluído'?'selected':''}>Concluído</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Progresso: <span id="prog-val">${dados.progress||0}%</span></label>
+          <input type="range" min="0" max="100" value="${dados.progress||0}" id="prog-slider" style="width:100%;accent-color:var(--accent2);cursor:pointer">
+        </div>
       </div>` : ''}
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost btn-sm" onclick="closeModal()">Fechar</button>
-      ${dados.id ? `<button class="btn btn-primary btn-sm" onclick="atualizarProgressoProjeto(${dados.id})">Salvar Progresso →</button>` : `<button class="btn btn-primary btn-sm" onclick="closeModal();window.location.href='projetos.html'">Ver Projetos →</button>`}
+      ${dados.id
+        ? `<button class="btn btn-primary btn-sm" onclick="salvarEdicaoProjeto(${dados.id})">Salvar Alterações →</button>`
+        : `<button class="btn btn-primary btn-sm" onclick="closeModal();window.location.href='projetos.html'">Ver Projetos →</button>`}
     </div>
   `);
 
-  // Slider live update
   const slider = document.getElementById('prog-slider');
-  const valEl = document.getElementById('prog-val');
+  const valEl  = document.getElementById('prog-val');
   if (slider) slider.addEventListener('input', () => { valEl.textContent = slider.value + '%'; });
 }
 
-function atualizarProgressoProjeto(id) {
-  const val = document.getElementById('prog-slider')?.value;
-  if (val === undefined) return;
-  const list = getData('projetos').map(p => p.id === id ? { ...p, progress: Number(val) } : p);
+function salvarEdicaoProjeto(id) {
+  const status   = document.getElementById('edit-proj-status')?.value;
+  const progress = Number(document.getElementById('prog-slider')?.value || 0);
+  const list = getData('projetos').map(p => p.id === id ? { ...p, status, progress } : p);
   saveData('projetos', list);
   closeModal();
-  showToast('Progresso atualizado!', 'success');
-  if (typeof renderProjetos === 'function') renderProjetos();
+  showToast('Projeto atualizado!', 'success');
+  if (typeof renderProjetos  === 'function') renderProjetos();
   if (typeof renderDashboard === 'function') renderDashboard();
 }
 
@@ -259,16 +258,53 @@ function modalColaborador(dados) {
         <div class="avatar-sm ${dados.cor||''}" style="width:44px;height:44px;font-size:18px;border-radius:50%;font-family:var(--font-disp)">${dados.inicial||dados.nome?.charAt(0)||'?'}</div>
         <div>
           <div class="modal-title">${dados.nome}</div>
-          <div class="modal-sub">${dados.cargo} · ${dados.email}</div>
+          <div class="modal-sub">${dados.cargo||'—'} · ${dados.email||'—'}</div>
         </div>
       </div>
       <button class="modal-close">✕</button>
     </div>
     <div class="modal-body">
+      ${dados.id ? `
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-md);padding:14px">
+        <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:12px">✎ Editar Colaborador</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nome</label>
+            <input class="form-input" id="edit-col-nome" value="${dados.nome}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Cargo</label>
+            <input class="form-input" id="edit-col-cargo" value="${dados.cargo||''}">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">E-mail</label>
+            <input class="form-input" id="edit-col-email" type="email" value="${dados.email||''}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Carga Atual (%)</label>
+            <input class="form-input" id="edit-col-carga" type="number" min="0" max="100" value="${dados.carga||0}">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nível de Acesso</label>
+            <select class="form-input" id="edit-col-acesso">
+              <option ${dados.acesso==='Colaborador'?'selected':''}>Colaborador</option>
+              <option ${dados.acesso==='Gerente'?'selected':''}>Gerente</option>
+              <option ${dados.acesso==='Administrador'?'selected':''}>Administrador</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Habilidades (separadas por vírgula)</label>
+          <input class="form-input" id="edit-col-skills" value="${(dados.skills||[]).join(', ')}">
+        </div>
+      </div>` : `
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-md);padding:14px">
-        <div class="detail-row"><span class="detail-key">Cargo</span><span class="detail-val">${dados.cargo}</span></div>
+        <div class="detail-row"><span class="detail-key">Cargo</span><span class="detail-val">${dados.cargo||'—'}</span></div>
         <div class="detail-row"><span class="detail-key">E-mail</span><span class="detail-val" style="font-family:var(--font-mono);font-size:12px">${dados.email||'—'}</span></div>
-        <div class="detail-row"><span class="detail-key">Projetos</span><span class="badge badge-metal">${dados.projetos||0} projetos</span></div>
         <div class="detail-row"><span class="detail-key">Status</span><span class="badge ${ci.cls}">${ci.label}</span></div>
         <div class="detail-row"><span class="detail-key">Nível de Acesso</span><span class="detail-val">${dados.acesso||'Colaborador'}</span></div>
       </div>
@@ -279,24 +315,38 @@ function modalColaborador(dados) {
         </div>
         <div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);margin-top:4px">${dados.carga||0}% de capacidade</div>
       </div>
-      ${dados.skills?.length ? `
-      <div>
-        <div class="detail-key" style="margin-bottom:8px">Habilidades</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          ${dados.skills.map(s => `<span class="badge badge-metal">${s}</span>`).join('')}
-        </div>
-      </div>` : ''}
+      ${dados.skills?.length ? `<div><div class="detail-key" style="margin-bottom:8px">Habilidades</div><div style="display:flex;gap:6px;flex-wrap:wrap">${dados.skills.map(s => `<span class="badge badge-metal">${s}</span>`).join('')}</div></div>` : ''}
+      `}
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost btn-sm" onclick="closeModal()">Fechar</button>
-      ${dados.id ? `<button class="btn btn-ghost btn-sm" style="border-color:rgba(239,68,68,0.3);color:var(--danger)" onclick="removeItem('colaboradores',${dados.id});closeModal();if(typeof renderColaboradores==='function')renderColaboradores();showToast('Colaborador removido','success')">Remover</button>` : ''}
+      ${dados.id ? `
+        <button class="btn btn-ghost btn-sm" style="border-color:rgba(239,68,68,0.3);color:var(--danger)" onclick="removeItem('colaboradores',${dados.id});closeModal();if(typeof renderColaboradores==='function')renderColaboradores();showToast('Colaborador removido','success')">Remover</button>
+        <button class="btn btn-primary btn-sm" onclick="salvarEdicaoColaborador(${dados.id})">Salvar →</button>
+      ` : ''}
     </div>
   `);
 }
 
+function salvarEdicaoColaborador(id) {
+  const nome  = document.getElementById('edit-col-nome')?.value.trim();
+  if (!nome) { showToast('Informe o nome', 'error'); return; }
+  const cargo  = document.getElementById('edit-col-cargo')?.value.trim() || '';
+  const email  = document.getElementById('edit-col-email')?.value.trim() || '';
+  const carga  = Number(document.getElementById('edit-col-carga')?.value || 0);
+  const acesso = document.getElementById('edit-col-acesso')?.value || 'Colaborador';
+  const skills = (document.getElementById('edit-col-skills')?.value || '').split(',').map(s => s.trim()).filter(Boolean);
+  const list = getData('colaboradores').map(c => c.id === id ? { ...c, nome, cargo, email, carga, acesso, skills } : c);
+  saveData('colaboradores', list);
+  closeModal();
+  showToast('Colaborador atualizado!', 'success');
+  if (typeof renderColaboradores === 'function') renderColaboradores();
+  if (typeof renderDashboard     === 'function') renderDashboard();
+}
+
 // ---- MODAL DETALHE: CLIENTE ----
 function modalCliente(dados) {
-  const statusMap = { ativo: 'badge-success', proposta: 'badge-warning', lead: 'badge-info' };
+  const statusMap   = { ativo: 'badge-success', proposta: 'badge-warning', lead: 'badge-info' };
   const statusLabel = { ativo: 'Ativo', proposta: 'Em Proposta', lead: 'Lead' };
   openModal(`
     <div class="modal-header">
@@ -311,15 +361,39 @@ function modalCliente(dados) {
         <div class="detail-row"><span class="detail-key">Contato</span><span class="detail-val">${dados.contato||'—'}</span></div>
         <div class="detail-row"><span class="detail-key">E-mail</span><span class="detail-val" style="font-family:var(--font-mono);font-size:12px">${dados.email||'—'}</span></div>
         <div class="detail-row"><span class="detail-key">Telefone</span><span class="detail-val">${dados.telefone||'—'}</span></div>
-        <div class="detail-row"><span class="detail-key">Status</span><span class="badge ${statusMap[dados.status]||'badge-metal'}">${statusLabel[dados.status]||dados.status}</span></div>
-        <div class="detail-row"><span class="detail-key">Projetos</span><span class="badge badge-metal">${dados.projetos||0}</span></div>
+        <div class="detail-row"><span class="detail-key">Status atual</span><span class="badge ${statusMap[dados.status]||'badge-metal'}">${statusLabel[dados.status]||dados.status||'—'}</span></div>
       </div>
+      ${dados.id ? `
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-md);padding:14px">
+        <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:12px">✎ Editar Cliente</div>
+        <div class="form-group">
+          <label class="form-label">Status do Cliente</label>
+          <select class="form-input" id="edit-cli-status">
+            <option value="lead"     ${dados.status==='lead'    ?'selected':''}>Lead</option>
+            <option value="proposta" ${dados.status==='proposta'?'selected':''}>Em Proposta</option>
+            <option value="ativo"    ${dados.status==='ativo'   ?'selected':''}>Cliente Ativo</option>
+          </select>
+        </div>
+      </div>` : ''}
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost btn-sm" onclick="closeModal()">Fechar</button>
-      ${dados.id ? `<button class="btn btn-ghost btn-sm" style="border-color:rgba(239,68,68,0.3);color:var(--danger)" onclick="removeItem('clientes',${dados.id});closeModal();if(typeof renderClientes==='function')renderClientes();showToast('Cliente removido','success')">Remover</button>` : ''}
+      ${dados.id ? `
+        <button class="btn btn-ghost btn-sm" style="border-color:rgba(239,68,68,0.3);color:var(--danger)" onclick="removeItem('clientes',${dados.id});closeModal();if(typeof renderClientes==='function')renderClientes();showToast('Cliente removido','success')">Remover</button>
+        <button class="btn btn-primary btn-sm" onclick="salvarEdicaoCliente(${dados.id})">Salvar →</button>
+      ` : ''}
     </div>
   `);
+}
+
+function salvarEdicaoCliente(id) {
+  const status = document.getElementById('edit-cli-status')?.value;
+  const list = getData('clientes').map(c => c.id === id ? { ...c, status } : c);
+  saveData('clientes', list);
+  closeModal();
+  showToast('Cliente atualizado!', 'success');
+  if (typeof renderClientes  === 'function') renderClientes();
+  if (typeof renderDashboard === 'function') renderDashboard();
 }
 
 // ---- FORM: NOVO PROJETO ----
@@ -735,11 +809,11 @@ Object.assign(window, {
   statusBadge, statusKey, cargaInfo, progressFill,
   formatMoney, formatDate, avatarColor,
   modalProjeto, modalColaborador, modalCliente,
-  atualizarProgressoProjeto,
-  modalNovoProjetoForm,   salvarNovoProjeto,
-  modalNovoClienteForm,   salvarNovoCliente,
+  salvarEdicaoProjeto, salvarEdicaoColaborador, salvarEdicaoCliente,
+  modalNovoProjetoForm,     salvarNovoProjeto,
+  modalNovoClienteForm,     salvarNovoCliente,
   modalNovoColaboradorForm, salvarNovoColaborador,
-  modalNovaTarefaForm,    salvarNovaTarefa,
-  modalNovaEntradaForm,   salvarNovaTransacao,
-  modalNovaFaturaForm,    salvarNovaFatura,
+  modalNovaTarefaForm,      salvarNovaTarefa,
+  modalNovaEntradaForm,     salvarNovaTransacao,
+  modalNovaFaturaForm,      salvarNovaFatura,
 });

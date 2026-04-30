@@ -140,10 +140,26 @@
     }
 
     function marcarFaturaPaga(id) {
-      const list = getData('faturas').map(f => f.id === id ? { ...f, status: 'paga' } : f);
-      saveData('faturas', list);
+      const faturas = getData('faturas');
+      const fat = faturas.find(f => f.id === id);
+      if (!fat) return;
+      // Atualiza status da fatura
+      const updatedFaturas = faturas.map(f => f.id === id
+        ? { ...f, status: 'paga', pagaEm: new Date().toISOString().slice(0,10) }
+        : f
+      );
+      saveData('faturas', updatedFaturas);
+      // Registra como transação de entrada
+      addItem('transacoes', {
+        descricao: `Fatura paga: ${fat.numero}${fat.cliente ? ' — ' + fat.cliente : ''}`,
+        valor:     fat.valor,
+        tipo:      'Entrada',
+        origem:    fat.cliente || '',
+        data:      new Date().toISOString().slice(0,10),
+        projeto:   fat.projeto || '',
+      });
+      showToast('Fatura paga! Lançado nas transações.', 'success');
       renderFinanceiro();
-      showToast('Fatura marcada como paga!', 'success');
     }
 
     function removerFatura(id) {
@@ -211,7 +227,8 @@
       // Faturas
       const fatList = document.getElementById('faturas-list');
       const abertas = faturas.filter(f => f.status !== 'paga');
-      if (!abertas.length) {
+      const pagas   = faturas.filter(f => f.status === 'paga');
+      if (!abertas.length && !pagas.length) {
         fatList.innerHTML = `<div style="text-align:center;padding:40px 20px">
           <div style="font-size:28px;margin-bottom:8px;opacity:0.4">📋</div>
           <div style="font-size:13px;font-weight:600;color:var(--text2)">Nenhuma fatura em aberto</div>
@@ -219,7 +236,13 @@
         </div>`;
       } else {
         const hoje = new Date();
-        fatList.innerHTML = abertas.map(f => {
+        let html = '';
+        if (!abertas.length) {
+          html += `<div style="text-align:center;padding:24px 20px 12px">
+            <div style="font-size:13px;font-weight:600;color:var(--text2)">Nenhuma fatura em aberto</div>
+          </div>`;
+        }
+        html += abertas.map(f => {
           const venc  = f.vencimento ? new Date(f.vencimento + 'T12:00:00') : null;
           const atras = venc && venc < hoje;
           const cor   = atras ? 'var(--danger)' : 'var(--warning)';
@@ -239,18 +262,40 @@
                 <span style="font-family:var(--font-mono);font-size:10px;color:${atras ? 'var(--danger)' : 'var(--text3)'}">Vence: ${formatDate(f.vencimento)}</span>
               </div>
               <div style="display:flex;gap:6px">
-                <button class="btn btn-ghost btn-sm" style="flex:1;color:var(--success);border-color:rgba(34,197,94,0.3)" onclick="marcarFaturaPaga(${f.id})">✓ Pago</button>
+                <button class="btn btn-ghost btn-sm" style="flex:1;color:var(--success);border-color:rgba(34,197,94,0.3)" onclick="marcarFaturaPaga(${f.id})">✓ Marcar como Pago</button>
                 <button class="btn btn-ghost btn-sm" style="color:var(--danger);border-color:rgba(239,68,68,0.2)" onclick="removerFatura(${f.id})">✕</button>
               </div>
             </div>
           `;
-        }).join('') + `
-          <div class="sep-metal"></div>
-          <div style="display:flex;justify-content:space-between;padding:10px 0">
-            <span style="font-family:var(--font-mono);font-size:11px;color:var(--text3)">Total em aberto</span>
-            <span style="font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--accent2)">R$ ${formatMoney(aReceber)}</span>
-          </div>
-        `;
+        }).join('');
+        if (abertas.length) {
+          html += `
+            <div class="sep-metal"></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0">
+              <span style="font-family:var(--font-mono);font-size:11px;color:var(--text3)">Total em aberto</span>
+              <span style="font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--accent2)">R$ ${formatMoney(aReceber)}</span>
+            </div>
+          `;
+        }
+        if (pagas.length) {
+          html += `<div style="font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);padding:8px 0 4px">Histórico — Pagas</div>`;
+          html += pagas.map(f => `
+            <div style="padding:10px 14px;background:var(--surface2);border-radius:var(--r-md);border:1px solid var(--border);border-left:3px solid var(--success);opacity:0.8">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <div style="font-weight:600;font-size:12px;color:var(--text2)">${f.numero} · ${f.cliente || '—'}</div>
+                  <div style="font-size:10px;color:var(--text3)">Pago em: ${formatDate(f.pagaEm || f.emitidaEm)}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--success)">R$ ${formatMoney(f.valor)}</span>
+                  <span class="badge badge-success">Pago</span>
+                  <button class="btn btn-ghost btn-sm" style="color:var(--danger);border-color:rgba(239,68,68,0.2)" onclick="removerFatura(${f.id})">✕</button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        }
+        fatList.innerHTML = html;
       }
     }
 

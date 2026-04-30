@@ -11,7 +11,6 @@
 
   <aside class="sidebar">
     <div class="sidebar-logo">
-      
       <div class="logo-text">
         <span class="logo-name" data-bind="empresa">NITRO AGENCIA DIGITAL</span>
         <span class="logo-sub">Gestão Empresarial</span>
@@ -20,12 +19,12 @@
     <nav class="sidebar-nav">
       <span class="nav-section-label">Principal</span>
       <a href="index.html" class="nav-item" data-page="dashboard"><div class="nav-icon">⬡</div>Dashboard</a>
-      <a href="projetos.html" class="nav-item" data-page="projetos"><div class="nav-icon">◈</div>Projetos<span class="nav-badge">12</span></a>
+      <a href="projetos.html" class="nav-item" data-page="projetos"><div class="nav-icon">◈</div>Projetos<span class="nav-badge" id="badge-projetos"></span></a>
       <a href="clientes.html" class="nav-item" data-page="clientes"><div class="nav-icon">◉</div>Clientes</a>
       <a href="financeiro.html" class="nav-item" data-page="financeiro"><div class="nav-icon">◎</div>Financeiro</a>
       <a href="colaboradores.html" class="nav-item" data-page="colaboradores"><div class="nav-icon">◍</div>Colaboradores</a>
       <span class="nav-section-label">Operações</span>
-      <a href="tarefas.html" class="nav-item" data-page="tarefas"><div class="nav-icon">✦</div>Tarefas<span class="nav-badge">7</span></a>
+      <a href="tarefas.html" class="nav-item" data-page="tarefas"><div class="nav-icon">✦</div>Tarefas<span class="nav-badge" id="badge-tarefas"></span></a>
       <a href="relatorios.html" class="nav-item" data-page="relatorios"><div class="nav-icon">▣</div>Relatórios</a>
       <span class="nav-section-label">Sistema</span>
       <a href="configuracoes.html" class="nav-item" data-page="configuracoes"><div class="nav-icon">⚙</div>Configurações</a>
@@ -49,11 +48,11 @@
       <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu"><span></span><span></span><span></span></button>
       <div class="topbar-title">
         <div class="topbar-page">Relatórios</div>
-        <div class="topbar-breadcrumb">Análise de desempenho · Abril 2026</div>
+        <div class="topbar-breadcrumb">Exportar dados do sistema em PDF</div>
       </div>
       <div class="topbar-actions">
-        <button class="btn btn-ghost btn-sm">↓ Exportar PDF</button>
-        <button class="btn btn-primary btn-sm">Gerar Relatório</button>
+        <button class="btn btn-ghost btn-sm" onclick="gerarPDF('executivo')">↓ Resumo Executivo</button>
+        <button class="btn btn-primary btn-sm" onclick="gerarPDF('projetos')">Gerar Relatório</button>
       </div>
     </header>
 
@@ -69,109 +68,78 @@
           <div style="font-size:28px;margin-bottom:12px;opacity:0.8">📊</div>
           <div class="project-name">Desempenho de Projetos</div>
           <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">Análise completa de entrega, progresso e cumprimento de prazos por projeto.</p>
-          <div style="display:flex;gap:6px">
+          <div style="display:flex;gap:6px;margin-bottom:12px">
             <span class="badge badge-metal">Mensal</span>
             <span class="badge badge-metal">Trimestral</span>
           </div>
-          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%">Gerar →</button>
+          <button class="btn btn-primary btn-sm" style="width:100%" onclick="gerarPDF('projetos')">↓ Gerar PDF</button>
         </div>
 
         <div class="project-card shine-corner" style="animation-delay:0.10s;cursor:pointer">
           <div style="font-size:28px;margin-bottom:12px;opacity:0.8">💰</div>
           <div class="project-name">DRE Simplificado</div>
-          <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">Demonstrativo de resultado com entradas, saídas, margem e comparativos de períodos.</p>
-          <div style="display:flex;gap:6px">
+          <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">Demonstrativo de resultado com entradas, saídas, margem e comparativo.</p>
+          <div style="display:flex;gap:6px;margin-bottom:12px">
             <span class="badge badge-metal">Mensal</span>
             <span class="badge badge-metal">Anual</span>
           </div>
-          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%">Gerar →</button>
+          <button class="btn btn-primary btn-sm" style="width:100%" onclick="gerarPDF('financeiro')">↓ Gerar PDF</button>
         </div>
 
         <div class="project-card shine-corner" style="animation-delay:0.15s;cursor:pointer">
           <div style="font-size:28px;margin-bottom:12px;opacity:0.8">👥</div>
           <div class="project-name">Carga de Colaboradores</div>
           <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">Visão de alocação, projetos ativos e produtividade por membro da equipe.</p>
-          <div style="display:flex;gap:6px">
+          <div style="display:flex;gap:6px;margin-bottom:12px">
             <span class="badge badge-metal">Semanal</span>
             <span class="badge badge-metal">Mensal</span>
           </div>
-          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%">Gerar →</button>
+          <button class="btn btn-primary btn-sm" style="width:100%" onclick="gerarPDF('colaboradores')">↓ Gerar PDF</button>
         </div>
 
         <div class="project-card shine-corner" style="animation-delay:0.20s;cursor:pointer">
           <div style="font-size:28px;margin-bottom:12px;opacity:0.8">🏢</div>
           <div class="project-name">Portfólio de Clientes</div>
-          <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">LTV, histórico de contratos, satisfação e oportunidades de upsell por cliente.</p>
-          <div style="display:flex;gap:6px">
+          <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">Histórico de contratos e carteira de clientes por status e volume.</p>
+          <div style="display:flex;gap:6px;margin-bottom:12px">
             <span class="badge badge-metal">Trimestral</span>
           </div>
-          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%">Gerar →</button>
+          <button class="btn btn-primary btn-sm" style="width:100%" onclick="gerarPDF('clientes')">↓ Gerar PDF</button>
         </div>
 
         <div class="project-card shine-corner" style="animation-delay:0.25s;cursor:pointer">
           <div style="font-size:28px;margin-bottom:12px;opacity:0.8">📅</div>
           <div class="project-name">Fluxo de Caixa</div>
-          <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">Projeção de entradas e saídas para os próximos 90 dias com alertas de saldo.</p>
-          <div style="display:flex;gap:6px">
-            <span class="badge badge-metal">Semanal</span>
-            <span class="badge badge-metal">90 dias</span>
+          <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">Entradas, saídas e saldo com todas as transações registradas no sistema.</p>
+          <div style="display:flex;gap:6px;margin-bottom:12px">
+            <span class="badge badge-metal">Completo</span>
           </div>
-          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%">Gerar →</button>
+          <button class="btn btn-primary btn-sm" style="width:100%" onclick="gerarPDF('caixa')">↓ Gerar PDF</button>
         </div>
 
         <div class="project-card shine-corner" style="animation-delay:0.30s;cursor:pointer">
           <div style="font-size:28px;margin-bottom:12px;opacity:0.8">⚡</div>
           <div class="project-name">Executive Summary</div>
           <p style="font-size:11px;color:var(--text3);margin:6px 0 12px;line-height:1.5">Resumo executivo completo para apresentação a diretores e stakeholders.</p>
-          <div style="display:flex;gap:6px">
+          <div style="display:flex;gap:6px;margin-bottom:12px">
             <span class="badge badge-metal">Mensal</span>
-            <span class="badge badge-danger">Premium</span>
           </div>
-          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%">Gerar →</button>
+          <button class="btn btn-primary btn-sm" style="width:100%" onclick="gerarPDF('executivo')">↓ Gerar PDF</button>
         </div>
       </div>
 
-      <!-- Últimos relatórios gerados -->
-      <div>
-        <div class="section-header">
-          <span class="section-title">Relatórios Gerados Recentemente</span>
-        </div>
-        <div class="chart-card">
-          <div class="card-body" style="padding:8px">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Relatório</th>
-                  <th>Período</th>
-                  <th>Gerado por</th>
-                  <th>Data</th>
-                  <th>Ação</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><div style="font-weight:600;color:var(--text)">Desempenho de Projetos</div></td>
-                  <td><span class="badge badge-metal">Março 2026</span></td>
-                  <td style="color:var(--text2)">Carla Matos</td>
-                  <td style="font-family:var(--font-mono);font-size:11px;color:var(--text3)">01/04/2026</td>
-                  <td style="text-align:right"><button class="btn btn-ghost btn-sm">↓ PDF</button></td>
-                </tr>
-                <tr>
-                  <td><div style="font-weight:600;color:var(--text)">DRE Simplificado</div></td>
-                  <td><span class="badge badge-metal">Q1 2026</span></td>
-                  <td style="color:var(--text2)">Administrador</td>
-                  <td style="font-family:var(--font-mono);font-size:11px;color:var(--text3)">01/04/2026</td>
-                  <td style="text-align:right"><button class="btn btn-ghost btn-sm">↓ PDF</button></td>
-                </tr>
-                <tr>
-                  <td><div style="font-weight:600;color:var(--text)">Carga de Colaboradores</div></td>
-                  <td><span class="badge badge-metal">Semana 17</span></td>
-                  <td style="color:var(--text2)">Carla Matos</td>
-                  <td style="font-family:var(--font-mono);font-size:11px;color:var(--text3)">25/04/2026</td>
-                  <td style="text-align:right"><button class="btn btn-ghost btn-sm">↓ PDF</button></td>
-                </tr>
-              </tbody>
-            </table>
+      <!-- Instruções -->
+      <div class="chart-card">
+        <div class="card-body" style="padding:16px 20px">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div style="font-size:22px;opacity:0.7">ℹ</div>
+            <div>
+              <div style="font-weight:600;font-size:13px;color:var(--text);margin-bottom:4px">Como salvar o PDF</div>
+              <div style="font-size:12px;color:var(--text3);line-height:1.7">
+                Ao clicar em "Gerar PDF", o relatório abre em nova aba. Use <strong style="color:var(--text2)">Ctrl+P</strong> (Windows) ou <strong style="color:var(--text2)">Cmd+P</strong> (Mac) para imprimir.<br>
+                Na impressora, selecione <strong style="color:var(--text2)">"Salvar como PDF"</strong> para gerar o arquivo.
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -183,5 +151,225 @@
   <script src="assets/js/config.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
+  <script>
+    // Atualiza badges da sidebar
+    (function() {
+      const projAtivos = getData('projetos').filter(p => p.status !== 'Concluído').length;
+      const bProj = document.getElementById('badge-projetos');
+      if (bProj) bProj.textContent = projAtivos || '';
+      const pendentes = getData('tarefas').filter(t => t.status !== 'done').length;
+      const bTar = document.getElementById('badge-tarefas');
+      if (bTar) bTar.textContent = pendentes || '';
+    })();
+
+    function gerarPDF(tipo) {
+      const empresa = (typeof getSettings === 'function') ? (getSettings().empresa || 'Sistema de Gestão') : 'Sistema de Gestão';
+      const dataHoje = new Date().toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric' });
+
+      const css = `
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#111;padding:36px}
+        .header{border-bottom:3px solid #1d4ed8;padding-bottom:18px;margin-bottom:28px;display:flex;justify-content:space-between;align-items:flex-end}
+        .empresa-nome{font-size:22px;font-weight:800;color:#1d4ed8}
+        .rel-titulo{font-size:15px;color:#444;margin-top:4px}
+        .data-gerado{font-size:11px;color:#888;text-align:right}
+        h2{font-size:13px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:1px;margin:22px 0 10px;padding-bottom:4px;border-bottom:1px solid #e5e7eb}
+        table{width:100%;border-collapse:collapse;margin-bottom:16px}
+        th{background:#1d4ed8;color:#fff;padding:8px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.5px}
+        td{padding:7px 12px;border-bottom:1px solid #f0f0f0;font-size:12px;vertical-align:top}
+        tr:nth-child(even) td{background:#f8fafc}
+        .sumario td{font-size:13px;padding:9px 12px;border-bottom:1px solid #e5e7eb}
+        .sumario td:last-child{text-align:right;font-weight:700}
+        .destaque{color:#16a34a}
+        .saldo-neg{color:#dc2626}
+        .footer{margin-top:36px;padding-top:12px;border-top:1px solid #e5e7eb;font-size:10px;color:#aaa;text-align:center}
+        @media print{body{padding:20px}button{display:none}}
+      `;
+
+      let titulo = '';
+      let corpo  = '';
+
+      if (tipo === 'projetos') {
+        titulo = 'Relatório de Projetos';
+        const proj = getData('projetos');
+        const ativos   = proj.filter(p => p.status !== 'Concluído').length;
+        const concluidos = proj.filter(p => p.status === 'Concluído').length;
+        const valorTotal = proj.reduce((s, p) => s + (parseFloat(p.valor) || 0), 0);
+        corpo = `
+          <h2>Resumo</h2>
+          <table class="sumario">
+            <tr><td>Total de projetos</td><td>${proj.length}</td></tr>
+            <tr><td>Em andamento / atrasados</td><td>${ativos}</td></tr>
+            <tr><td>Concluídos</td><td class="destaque">${concluidos}</td></tr>
+            <tr><td>Valor total contratado</td><td>R$ ${valorTotal.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td></tr>
+          </table>
+          <h2>Lista de Projetos</h2>
+          <table>
+            <thead><tr><th>Projeto</th><th>Cliente</th><th>Status</th><th>Progresso</th><th>Prazo</th><th>Valor (R$)</th></tr></thead>
+            <tbody>
+              ${proj.length
+                ? proj.map(p => `<tr>
+                    <td>${p.nome}</td>
+                    <td>${p.cliente||'—'}</td>
+                    <td>${p.status||'—'}</td>
+                    <td>${p.progress||0}%</td>
+                    <td>${p.prazo ? new Date(p.prazo+'T12:00:00').toLocaleDateString('pt-BR') : '—'}</td>
+                    <td>${parseFloat(p.valor||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
+                  </tr>`).join('')
+                : '<tr><td colspan="6">Nenhum projeto cadastrado</td></tr>'}
+            </tbody>
+          </table>
+        `;
+      } else if (tipo === 'financeiro' || tipo === 'caixa') {
+        titulo = tipo === 'caixa' ? 'Fluxo de Caixa' : 'DRE Simplificado';
+        const trans  = getData('transacoes');
+        const fat    = getData('faturas');
+        const entradas = trans.filter(t => t.tipo === 'Entrada').reduce((s, t) => s + t.valor, 0);
+        const saidas   = trans.filter(t => t.tipo === 'Saída').reduce((s, t) => s + t.valor, 0);
+        const saldo    = entradas - saidas;
+        const aRec     = fat.filter(f => f.status === 'pendente').reduce((s, f) => s + f.valor, 0);
+        corpo = `
+          <h2>Resumo Financeiro</h2>
+          <table class="sumario">
+            <tr><td>Total de Entradas</td><td class="destaque">R$ ${entradas.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td></tr>
+            <tr><td>Total de Saídas</td><td class="${saldo<0?'saldo-neg':''}">R$ ${saidas.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td></tr>
+            <tr><td><strong>Saldo Líquido</strong></td><td class="${saldo>=0?'destaque':'saldo-neg'}"><strong>R$ ${saldo.toLocaleString('pt-BR',{minimumFractionDigits:2})}</strong></td></tr>
+            <tr><td>A Receber (faturas pendentes)</td><td>R$ ${aRec.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td></tr>
+          </table>
+          <h2>Transações (${trans.length})</h2>
+          <table>
+            <thead><tr><th>Descrição</th><th>Tipo</th><th>Origem</th><th>Data</th><th>Valor (R$)</th></tr></thead>
+            <tbody>
+              ${trans.length
+                ? [...trans].sort((a,b) => new Date(b.data)-new Date(a.data)).map(t => `<tr>
+                    <td>${t.descricao}</td>
+                    <td>${t.tipo}</td>
+                    <td>${t.origem||'—'}</td>
+                    <td>${t.data ? new Date(t.data+'T12:00:00').toLocaleDateString('pt-BR') : '—'}</td>
+                    <td class="${t.tipo==='Entrada'?'destaque':'saldo-neg'}">${t.tipo==='Entrada'?'+':'-'}R$ ${t.valor.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
+                  </tr>`).join('')
+                : '<tr><td colspan="5">Nenhuma transação registrada</td></tr>'}
+            </tbody>
+          </table>
+          ${fat.length ? `
+          <h2>Faturas (${fat.length})</h2>
+          <table>
+            <thead><tr><th>Número</th><th>Cliente</th><th>Projeto</th><th>Vencimento</th><th>Status</th><th>Valor (R$)</th></tr></thead>
+            <tbody>
+              ${fat.map(f => `<tr>
+                <td>${f.numero}</td><td>${f.cliente||'—'}</td><td>${f.projeto||'—'}</td>
+                <td>${f.vencimento ? new Date(f.vencimento+'T12:00:00').toLocaleDateString('pt-BR') : '—'}</td>
+                <td>${f.status==='paga'?'Paga':'Pendente'}</td>
+                <td>R$ ${f.valor.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
+              </tr>`).join('')}
+            </tbody>
+          </table>` : ''}
+        `;
+      } else if (tipo === 'colaboradores') {
+        titulo = 'Relatório de Colaboradores';
+        const col = getData('colaboradores');
+        const criticos = col.filter(c => c.carga >= 90).length;
+        corpo = `
+          <h2>Resumo da Equipe</h2>
+          <table class="sumario">
+            <tr><td>Total de colaboradores</td><td>${col.length}</td></tr>
+            <tr><td>Carga crítica (≥90%)</td><td class="${criticos?'saldo-neg':''}">${criticos}</td></tr>
+            <tr><td>Média de carga</td><td>${col.length ? Math.round(col.reduce((s,c)=>s+(c.carga||0),0)/col.length) : 0}%</td></tr>
+          </table>
+          <h2>Equipe (${col.length})</h2>
+          <table>
+            <thead><tr><th>Nome</th><th>Cargo</th><th>E-mail</th><th>Carga</th><th>Habilidades</th></tr></thead>
+            <tbody>
+              ${col.length
+                ? col.map(c => `<tr>
+                    <td>${c.nome}</td>
+                    <td>${c.cargo||'—'}</td>
+                    <td>${c.email||'—'}</td>
+                    <td class="${c.carga>=90?'saldo-neg':c.carga>=75?'':'destaque'}">${c.carga||0}%</td>
+                    <td>${(c.skills||[]).join(', ')||'—'}</td>
+                  </tr>`).join('')
+                : '<tr><td colspan="5">Nenhum colaborador cadastrado</td></tr>'}
+            </tbody>
+          </table>
+        `;
+      } else if (tipo === 'clientes') {
+        titulo = 'Portfólio de Clientes';
+        const cli = getData('clientes');
+        const ativos   = cli.filter(c => c.status==='ativo').length;
+        const proposta = cli.filter(c => c.status==='proposta').length;
+        const leads    = cli.filter(c => c.status==='lead').length;
+        corpo = `
+          <h2>Resumo</h2>
+          <table class="sumario">
+            <tr><td>Total cadastrado</td><td>${cli.length}</td></tr>
+            <tr><td>Clientes ativos</td><td class="destaque">${ativos}</td></tr>
+            <tr><td>Em proposta</td><td>${proposta}</td></tr>
+            <tr><td>Leads</td><td>${leads}</td></tr>
+          </table>
+          <h2>Base de Clientes (${cli.length})</h2>
+          <table>
+            <thead><tr><th>Empresa</th><th>Contato</th><th>E-mail</th><th>Telefone</th><th>Status</th></tr></thead>
+            <tbody>
+              ${cli.length
+                ? cli.map(c => `<tr>
+                    <td>${c.empresa}</td>
+                    <td>${c.contato||'—'}</td>
+                    <td>${c.email||'—'}</td>
+                    <td>${c.telefone||'—'}</td>
+                    <td>${c.status==='ativo'?'Ativo':c.status==='proposta'?'Em Proposta':'Lead'}</td>
+                  </tr>`).join('')
+                : '<tr><td colspan="5">Nenhum cliente cadastrado</td></tr>'}
+            </tbody>
+          </table>
+        `;
+      } else {
+        titulo = 'Executive Summary';
+        const proj  = getData('projetos');
+        const cli   = getData('clientes');
+        const col   = getData('colaboradores');
+        const trans = getData('transacoes');
+        const fat   = getData('faturas');
+        const ent   = trans.filter(t=>t.tipo==='Entrada').reduce((s,t)=>s+t.valor,0);
+        const sai   = trans.filter(t=>t.tipo==='Saída').reduce((s,t)=>s+t.valor,0);
+        corpo = `
+          <h2>Visão Geral</h2>
+          <table class="sumario">
+            <tr><td>Projetos ativos</td><td>${proj.filter(p=>p.status!=='Concluído').length}</td></tr>
+            <tr><td>Projetos concluídos</td><td>${proj.filter(p=>p.status==='Concluído').length}</td></tr>
+            <tr><td>Clientes ativos</td><td>${cli.filter(c=>c.status==='ativo').length}</td></tr>
+            <tr><td>Total de colaboradores</td><td>${col.length}</td></tr>
+            <tr><td>Total faturado (entradas)</td><td class="destaque">R$ ${ent.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td></tr>
+            <tr><td>Total de despesas (saídas)</td><td>R$ ${sai.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td></tr>
+            <tr><td><strong>Saldo Líquido</strong></td><td class="${ent-sai>=0?'destaque':'saldo-neg'}"><strong>R$ ${(ent-sai).toLocaleString('pt-BR',{minimumFractionDigits:2})}</strong></td></tr>
+            <tr><td>Faturas pendentes</td><td>${fat.filter(f=>f.status==='pendente').length}</td></tr>
+          </table>
+        `;
+      }
+
+      const win = window.open('', '_blank');
+      if (!win) { showToast('Permita pop-ups para gerar o PDF', 'error'); return; }
+      win.document.write(`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>${titulo} — ${empresa}</title>
+  <style>${css}</style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <div class="empresa-nome">${empresa}</div>
+      <div class="rel-titulo">${titulo}</div>
+    </div>
+    <div class="data-gerado">Gerado em: ${dataHoje}</div>
+  </div>
+  ${corpo}
+  <div class="footer">Relatório gerado pelo Sistema de Gestão · ${dataHoje}</div>
+  <script>window.onload = function(){ window.print(); }<\/script>
+</body>
+</html>`);
+      win.document.close();
+    }
+  </script>
 </body>
 </html>
